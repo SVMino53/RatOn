@@ -39,11 +39,17 @@ public class Player_scr : MonoBehaviour
 
             transform.rotation = newRotation;
 
-            //if (Input.GetAxis("Run") > 0.0f)
-            //{
-
-            //}
-            //transform.Translate()
+            if (Input.GetAxis("Stand Still") <= 0.0f)
+            {
+                if (Input.GetAxis("Run") > 0.0f)
+                {
+                    transform.Translate(direction * runSpeed * Time.deltaTime, Space.World);
+                }
+                else
+                {
+                    transform.Translate(direction * walkSpeed * Time.deltaTime, Space.World);
+                }
+            }
         }
     }
 }
