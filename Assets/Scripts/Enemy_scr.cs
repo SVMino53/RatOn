@@ -47,7 +47,21 @@ public class Enemy_scr : MonoBehaviour
         }
         else if (curState == State.CHASING)
         {
+            Vector3 toPlayerDirection = playerObj.transform.position - transform.position;
+            toPlayerDirection.Normalize();
 
+            float angle = Mathf.Asin(toPlayerDirection.normalized.x);
+            angle *= -Mathf.Rad2Deg;
+            if (toPlayerDirection.y < 0.0f)
+            {
+                angle += 180.0f;
+                angle *= -1.0f;
+            }
+            Quaternion newRotation = Quaternion.Euler(0.0f, 0.0f, angle);
+
+            transform.rotation = newRotation;
+
+            transform.Translate(toPlayerDirection * runSpeed * Time.deltaTime, Space.World);
         }
         else if (curState == State.LOSING)
         {
@@ -60,10 +74,10 @@ public class Enemy_scr : MonoBehaviour
         {
             Vector3 enemyDirection = new Vector3(-Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad), Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad));
 
-            Vector3 enemyToPlayerDirection = playerObj.transform.position - transform.position;
-            enemyToPlayerDirection.Normalize();
+            Vector3 toPlayerDirection = playerObj.transform.position - transform.position;
+            toPlayerDirection.Normalize();
 
-            float playerAngle = Vector3.Angle(enemyDirection, enemyToPlayerDirection);
+            float playerAngle = Vector3.Angle(enemyDirection, toPlayerDirection);
 
             if (playerAngle <= viewAngleDegrees)
             {
@@ -74,16 +88,12 @@ public class Enemy_scr : MonoBehaviour
             }
             else
             {
-                curState = State.IDLE;
-
                 // FOR TESTING!!!
                 GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.0f);
             }
         }
         else
         {
-            curState = State.IDLE;
-
             // FOR TESTING!!!
             GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.0f);
         }
