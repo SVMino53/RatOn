@@ -1,1 +1,71 @@
-﻿{}
+{
+    "name": "SwitchController",
+    "maps": [
+        {
+            "name": "Gameplay",
+            "id": "19a6c5f3-0c0c-40a0-bcfe-72e97f9b9550",
+            "actions": [
+                {
+                    "name": "Move",
+                    "type": "Button",
+                    "id": "dee2d609-2e0d-4f3e-980a-8aa2167f1d08",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Run",
+                    "type": "Button",
+                    "id": "43192300-4473-4ea2-838e-9b3020ccb732",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "StandStill",
+                    "type": "Button",
+                    "id": "97064bd1-03d9-4ada-af26-43b6585ddc27",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "4d2eb76c-2d2a-4012-9e8a-1b0215b8c09b",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "126b0608-8013-42fd-be74-fffca0ed0c09",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Run",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "170cf205-ca1d-469a-9a1f-1c17067811a3",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StandStill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
