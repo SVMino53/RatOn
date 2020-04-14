@@ -131,7 +131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 742563774}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Enemies
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -160,6 +160,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 742563774}
     m_Modifications:
+    - target: {fileID: 3217307598173929521, guid: 9101ff750924d7a46a1b1e735fd28ce2,
+        type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3217307598173929521, guid: 9101ff750924d7a46a1b1e735fd28ce2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3365890479121393651, guid: 9101ff750924d7a46a1b1e735fd28ce2,
         type: 3}
       propertyPath: playerObj
@@ -418,6 +428,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 742563774}
     m_Modifications:
+    - target: {fileID: 3217307598173929521, guid: 9101ff750924d7a46a1b1e735fd28ce2,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3365890479121393651, guid: 9101ff750924d7a46a1b1e735fd28ce2,
         type: 3}
       propertyPath: playerObj
