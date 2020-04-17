@@ -4,5 +4,8 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Testing/Isak_TEST.unity
+    guid: 3fd285a2112a38740b2fdac71eb40b12
   m_configObjects: {}
