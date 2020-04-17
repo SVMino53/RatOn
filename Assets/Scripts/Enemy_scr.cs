@@ -26,12 +26,20 @@ public class Enemy_scr : MonoBehaviour
 
     public bool isTalking;
 
+    public string obstacleTag = "Obstacle";
+
+    public GameObject lineSightObj;
+
     Rigidbody2D rb;
+
+    EdgeCollider2D lineCollider;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+
+        lineCollider = lineSightObj.GetComponent<EdgeCollider2D>();
     }
 
     // Update is called once per frame
@@ -47,7 +55,21 @@ public class Enemy_scr : MonoBehaviour
         }
         else if (curState == State.CHASING)
         {
+            Vector3 toPlayerDirection = playerObj.transform.position - transform.position;
+            toPlayerDirection.Normalize();
 
+            float angle = Mathf.Asin(toPlayerDirection.normalized.x);
+            angle *= -Mathf.Rad2Deg;
+            if (toPlayerDirection.y < 0.0f)
+            {
+                angle += 180.0f;
+                angle *= -1.0f;
+            }
+            Quaternion newRotation = Quaternion.Euler(0.0f, 0.0f, angle);
+
+            transform.rotation = newRotation;
+
+            transform.Translate(toPlayerDirection * runSpeed * Time.deltaTime, Space.World);
         }
         else if (curState == State.LOSING)
         {
@@ -60,30 +82,54 @@ public class Enemy_scr : MonoBehaviour
         {
             Vector3 enemyDirection = new Vector3(-Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad), Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad));
 
-            Vector3 enemyToPlayerDirection = playerObj.transform.position - transform.position;
-            enemyToPlayerDirection.Normalize();
+            Vector3 toPlayer = playerObj.transform.position - transform.position;
 
-            float playerAngle = Vector3.Angle(enemyDirection, enemyToPlayerDirection);
+            float playerAngle = Vector3.Angle(new Vector3(0.0f, 1.0f, 0.0f), toPlayer.normalized);
 
             if (playerAngle <= viewAngleDegrees)
             {
-                curState = State.CHASING;
+                bool isBlocked = false;
 
-                // FOR TESTING!!!
-                GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f);
+                lineSightObj.transform.localScale = new Vector3(1.0f, toPlayer.magnitude, 1.0f);
+                
+                Quaternion newRotation = Quaternion.Euler(0.0f, 0.0f, transform.rotation.eulerAngles.z - playerAngle);
+
+                lineSightObj.transform.rotation = newRotation;
+
+                ContactFilter2D cf = new ContactFilter2D();
+                List<Collider2D> overlappingColliders = new List<Collider2D>();
+                int n = lineCollider.OverlapCollider(cf.NoFilter(), overlappingColliders);
+
+                for (int i = 0; i < n; i++)
+                {
+                    if (overlappingColliders[i].CompareTag(obstacleTag))
+                    {
+                        isBlocked = true;
+                        break;
+                    }
+                }
+
+                if (!isBlocked && n != 0)
+                {
+                    curState = State.CHASING;
+
+                    // FOR TESTING!!!
+                    GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f);
+                }
+                else
+                {
+                    // FOR TESTING!!!
+                    GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.0f);
+                }
             }
             else
             {
-                curState = State.IDLE;
-
                 // FOR TESTING!!!
                 GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.0f);
             }
         }
         else
         {
-            curState = State.IDLE;
-
             // FOR TESTING!!!
             GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.0f);
         }
