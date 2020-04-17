@@ -84,7 +84,7 @@ public class Enemy_scr : MonoBehaviour
 
             Vector3 toPlayer = playerObj.transform.position - transform.position;
 
-            float playerAngle = Vector3.Angle(enemyDirection, toPlayer.normalized);
+            float playerAngle = Vector3.Angle(new Vector3(0.0f, 1.0f, 0.0f), toPlayer.normalized);
 
             if (playerAngle <= viewAngleDegrees)
             {
