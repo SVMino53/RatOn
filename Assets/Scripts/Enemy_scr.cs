@@ -45,6 +45,9 @@ public class Enemy_scr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Vector2 selfPos = new Vector2(transform.position.x, transform.position.y);
+        //Vector2 playerPos = new Vector2(playerObj.transform.position.x, playerObj.transform.position.y);
+
         if (curState == State.IDLE)
         {
 
@@ -55,7 +58,7 @@ public class Enemy_scr : MonoBehaviour
         }
         else if (curState == State.CHASING)
         {
-            Vector3 toPlayerDirection = playerObj.transform.position - transform.position;
+            Vector2 toPlayerDirection = playerObj.transform.position - transform.position;
             toPlayerDirection.Normalize();
 
             float angle = Mathf.Asin(toPlayerDirection.normalized.x);
@@ -80,19 +83,19 @@ public class Enemy_scr : MonoBehaviour
 
         if (playerDistance <= viewDistance)
         {
-            Vector3 enemyDirection = new Vector3(-Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad), Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad));
+            Vector2 enemyDirection = new Vector2(-Mathf.Sin(transform.rotation.eulerAngles.z * Mathf.Deg2Rad), Mathf.Cos(transform.rotation.eulerAngles.z * Mathf.Deg2Rad));
 
-            Vector3 toPlayer = playerObj.transform.position - transform.position;
+            Vector2 toPlayer = playerObj.transform.position - transform.position;
 
-            float playerAngle = Vector3.Angle(new Vector3(0.0f, 1.0f, 0.0f), toPlayer.normalized);
+            float playerAngle = Vector2.SignedAngle(enemyDirection, toPlayer.normalized);
 
-            if (playerAngle <= viewAngleDegrees)
+            if (playerAngle <= viewAngleDegrees && playerAngle >= -viewAngleDegrees)
             {
                 bool isBlocked = false;
 
                 lineSightObj.transform.localScale = new Vector3(1.0f, toPlayer.magnitude, 1.0f);
                 
-                Quaternion newRotation = Quaternion.Euler(0.0f, 0.0f, transform.rotation.eulerAngles.z - playerAngle);
+                Quaternion newRotation = Quaternion.Euler(0.0f, 0.0f, transform.rotation.eulerAngles.z + playerAngle);
 
                 lineSightObj.transform.rotation = newRotation;
 
@@ -119,19 +122,19 @@ public class Enemy_scr : MonoBehaviour
                 else
                 {
                     // FOR TESTING!!!
-                    GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.0f);
+                    GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f);
                 }
             }
             else
             {
                 // FOR TESTING!!!
-                GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.0f);
+                GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f);
             }
         }
         else
         {
             // FOR TESTING!!!
-            GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.0f);
+            GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f);
         }
     }
 }
