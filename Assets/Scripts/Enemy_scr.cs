@@ -27,12 +27,79 @@ public class Enemy_scr : MonoBehaviour
     public bool isTalking;
 
     public string obstacleTag = "Obstacle";
+    public string windowTag = "Window";
 
     public GameObject lineSightObj;
+
+    public float getPathDelay = 0.5f;
+    float curGetPathDelay = 0.0f;
+
+    public float nextPointDistence = 0.2f;
+    int pointIndex = 0;
 
     Rigidbody2D rb;
 
     EdgeCollider2D lineCollider;
+
+    List<Vector2> path;
+
+    // For testing
+    public LineRenderer pathLine;
+    LineRenderer prevPathLine = null;
+
+    List<Vector2> GetPath(Vector2 target)
+    {
+        if (prevPathLine != null)
+        {
+            Destroy(prevPathLine.gameObject);
+        }
+        Vector2 curPoint = new Vector2(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y));
+
+        List<Vector2> path = new List<Vector2>();
+        Vector2 newPoint;
+
+        // For testing ->
+        List<Vector3> pointsList = new List<Vector3>();
+        pointsList.Add(curPoint);
+        // <-
+
+        while(Vector2.Distance(curPoint, target) > Mathf.Sqrt(2.0f) && Time.deltaTime < 10.0f)
+        {
+
+            Vector2 pointToPlayer = playerObj.transform.position;
+            pointToPlayer -= curPoint;
+
+            if (pointToPlayer.x <= -1.0f)
+            {
+                curPoint.x -= 1.0f;
+            }
+            else if (pointToPlayer.x >= 1.0f)
+            {
+                curPoint.x += 1.0f;
+            }
+            if (pointToPlayer.y <= -1.0f)
+            {
+                curPoint.y -= 1.0f;
+            }
+            else if (pointToPlayer.y >= 1.0f)
+            {
+                curPoint.y += 1.0f;
+            }
+
+            path.Add(curPoint);
+            pointsList.Add(curPoint);
+        }
+
+        path.Add(playerObj.transform.position);
+        pointsList.Add(playerObj.transform.position);
+
+        pathLine.positionCount = pointsList.Count;
+        pathLine.SetPositions(pointsList.ToArray());
+
+        prevPathLine = Instantiate(pathLine);
+
+        return path;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -58,21 +125,46 @@ public class Enemy_scr : MonoBehaviour
         }
         else if (curState == State.CHASING)
         {
-            Vector2 toPlayerDirection = playerObj.transform.position - transform.position;
-            toPlayerDirection.Normalize();
-
-            float angle = Mathf.Asin(toPlayerDirection.normalized.x);
-            angle *= -Mathf.Rad2Deg;
-            if (toPlayerDirection.y < 0.0f)
+            if (curGetPathDelay >= getPathDelay)
             {
-                angle += 180.0f;
-                angle *= -1.0f;
+                path = GetPath(playerObj.transform.position);
+
+                pointIndex = 0;
+
+                curGetPathDelay = 0.0f;
             }
-            Quaternion newRotation = Quaternion.Euler(0.0f, 0.0f, angle);
+            else
+            {
+                curGetPathDelay += Time.deltaTime;
+            }
 
-            transform.rotation = newRotation;
+            if (Vector2.Distance(transform.position, path[pointIndex]) <= nextPointDistence && pointIndex < path.Count - 1)
+            {
+                pointIndex++;
+            }
 
-            transform.Translate(toPlayerDirection * runSpeed * Time.deltaTime, Space.World);
+            Vector2 goToPoint = path[pointIndex];
+
+            Vector2 direction = -transform.position;
+            direction += goToPoint;
+
+            transform.Translate(direction.normalized * runSpeed * Time.deltaTime, Space.World);
+
+            //Vector2 toPlayerDirection = playerObj.transform.position - transform.position;
+            //toPlayerDirection.Normalize();
+
+            //float angle = Mathf.Asin(toPlayerDirection.normalized.x);
+            //angle *= -Mathf.Rad2Deg;
+            //if (toPlayerDirection.y < 0.0f)
+            //{
+            //    angle += 180.0f;
+            //    angle *= -1.0f;
+            //}
+            //Quaternion newRotation = Quaternion.Euler(0.0f, 0.0f, angle);
+
+            //transform.rotation = newRotation;
+
+            //transform.Translate(toPlayerDirection * runSpeed * Time.deltaTime, Space.World);
         }
         else if (curState == State.LOSING)
         {
@@ -112,9 +204,11 @@ public class Enemy_scr : MonoBehaviour
                     }
                 }
 
-                if (!isBlocked && n != 0)
+                if (!isBlocked && n > 1)
                 {
                     curState = State.CHASING;
+
+                    curGetPathDelay = getPathDelay;
 
                     // FOR TESTING!!!
                     GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f);

@@ -145,7 +145,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 742563773}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0072617834, y: 0.05787108, z: -1.6621094}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1297306182}
@@ -178,17 +178,17 @@ PrefabInstance:
     - target: {fileID: 3365890479121393661, guid: 9101ff750924d7a46a1b1e735fd28ce2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.14
+      value: 4.76
       objectReference: {fileID: 0}
     - target: {fileID: 3365890479121393661, guid: 9101ff750924d7a46a1b1e735fd28ce2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.06
+      value: -1.11
       objectReference: {fileID: 0}
     - target: {fileID: 3365890479121393661, guid: 9101ff750924d7a46a1b1e735fd28ce2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.6621094
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3365890479121393661, guid: 9101ff750924d7a46a1b1e735fd28ce2,
         type: 3}
@@ -229,6 +229,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 533.94604
+      objectReference: {fileID: 0}
+    - target: {fileID: 3365890479121393661, guid: 9101ff750924d7a46a1b1e735fd28ce2,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3365890479121393661, guid: 9101ff750924d7a46a1b1e735fd28ce2,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3365890479121393663, guid: 9101ff750924d7a46a1b1e735fd28ce2,
         type: 3}
@@ -285,7 +295,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1135176056}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.5, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1555267075}
@@ -19244,7 +19254,7 @@ TilemapCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -20534,17 +20544,17 @@ PrefabInstance:
     - target: {fileID: 3365890479121393661, guid: 9101ff750924d7a46a1b1e735fd28ce2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.2572618
+      value: 4.32
       objectReference: {fileID: 0}
     - target: {fileID: 3365890479121393661, guid: 9101ff750924d7a46a1b1e735fd28ce2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.3621289
+      value: 1.75
       objectReference: {fileID: 0}
     - target: {fileID: 3365890479121393661, guid: 9101ff750924d7a46a1b1e735fd28ce2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.6621094
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3365890479121393661, guid: 9101ff750924d7a46a1b1e735fd28ce2,
         type: 3}
@@ -20585,6 +20595,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 429.77002
+      objectReference: {fileID: 0}
+    - target: {fileID: 3365890479121393661, guid: 9101ff750924d7a46a1b1e735fd28ce2,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3365890479121393661, guid: 9101ff750924d7a46a1b1e735fd28ce2,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3365890479121393663, guid: 9101ff750924d7a46a1b1e735fd28ce2,
         type: 3}
@@ -20684,7 +20704,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 67a2607fe1b22fa43906975172a74f5c,
+      objectReference: {fileID: 21300000, guid: a29425c4b189e334f99b35f65dbe0c71,
         type: 3}
     - target: {fileID: 5384027174426745803, guid: b0f7cd157213b6949b6ac29a40882906,
         type: 3}
