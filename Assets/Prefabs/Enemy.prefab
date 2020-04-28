@@ -282,7 +282,7 @@ MonoBehaviour:
   windowTag: Window
   lineSightObj: {fileID: 3719550399588944658}
   getPathDelay: 0.3
-  nextPointDistence: 0.2
+  nextPointDistence: 0.5
   pathLine: {fileID: 1451558352377223197, guid: 99b6cd99f2bb61d479fc5fa855a1cdc7,
     type: 3}
 --- !u!50 &3365890479121393660
@@ -302,7 +302,7 @@ Rigidbody2D:
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0

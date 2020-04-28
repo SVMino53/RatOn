@@ -150,6 +150,10 @@ public class Enemy_scr : MonoBehaviour
 
             transform.Translate(direction.normalized * runSpeed * Time.deltaTime, Space.World);
 
+            float angle = Vector2.SignedAngle(Vector2.up, direction.normalized);
+
+            transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);
+
             //Vector2 toPlayerDirection = playerObj.transform.position - transform.position;
             //toPlayerDirection.Normalize();
 
