@@ -37,15 +37,43 @@ public class Enemy_scr : MonoBehaviour
     public float nextPointDistence = 0.2f;
     int pointIndex = 0;
 
-    Rigidbody2D rb;
+    public EdgeCollider2D generalLineCollider;
 
     EdgeCollider2D lineCollider;
 
     List<Vector2> path;
 
+    ContactFilter2D cf = new ContactFilter2D();
+
     // For testing
     public LineRenderer pathLine;
     LineRenderer prevPathLine = null;
+
+    bool GetLineIsColliding(Vector2 start, Vector2 end, string collidingTag)
+    {
+        generalLineCollider.transform.position = start;
+
+        Vector2 direction = (end - start).normalized;
+        float angle = Vector2.SignedAngle(Vector2.up, direction);
+
+        generalLineCollider.transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);
+
+        float distance = Vector2.Distance(start, end);
+        generalLineCollider.transform.localScale = new Vector3(1.0f, distance, 1.0f);
+
+        List<Collider2D> colliders = new List<Collider2D>();
+        int n = generalLineCollider.OverlapCollider(cf.NoFilter(), colliders);
+
+        for (int i = 0; i < n; i++)
+        {
+            if (colliders[i].CompareTag(collidingTag))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     List<Vector2> GetPath(Vector2 target)
     {
@@ -59,11 +87,13 @@ public class Enemy_scr : MonoBehaviour
         Vector2 newPoint;
 
         // For testing ->
-        List<Vector3> pointsList = new List<Vector3>();
-        pointsList.Add(curPoint);
+        List<Vector3> pointsList = new List<Vector3>
+        {
+            curPoint
+        };
         // <-
 
-        while(Vector2.Distance(curPoint, target) > Mathf.Sqrt(2.0f) && Time.deltaTime < 10.0f)
+        while (Vector2.Distance(curPoint, target) > Mathf.Sqrt(2.0f) && Time.deltaTime < 10.0f)
         {
 
             Vector2 pointToPlayer = playerObj.transform.position;
@@ -104,17 +134,12 @@ public class Enemy_scr : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-
         lineCollider = lineSightObj.GetComponent<EdgeCollider2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Vector2 selfPos = new Vector2(transform.position.x, transform.position.y);
-        //Vector2 playerPos = new Vector2(playerObj.transform.position.x, playerObj.transform.position.y);
-
         if (curState == State.IDLE)
         {
 
@@ -153,22 +178,6 @@ public class Enemy_scr : MonoBehaviour
             float angle = Vector2.SignedAngle(Vector2.up, direction.normalized);
 
             transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);
-
-            //Vector2 toPlayerDirection = playerObj.transform.position - transform.position;
-            //toPlayerDirection.Normalize();
-
-            //float angle = Mathf.Asin(toPlayerDirection.normalized.x);
-            //angle *= -Mathf.Rad2Deg;
-            //if (toPlayerDirection.y < 0.0f)
-            //{
-            //    angle += 180.0f;
-            //    angle *= -1.0f;
-            //}
-            //Quaternion newRotation = Quaternion.Euler(0.0f, 0.0f, angle);
-
-            //transform.rotation = newRotation;
-
-            //transform.Translate(toPlayerDirection * runSpeed * Time.deltaTime, Space.World);
         }
         else if (curState == State.LOSING)
         {
@@ -195,7 +204,6 @@ public class Enemy_scr : MonoBehaviour
 
                 lineSightObj.transform.rotation = newRotation;
 
-                ContactFilter2D cf = new ContactFilter2D();
                 List<Collider2D> overlappingColliders = new List<Collider2D>();
                 int n = lineCollider.OverlapCollider(cf.NoFilter(), overlappingColliders);
 
