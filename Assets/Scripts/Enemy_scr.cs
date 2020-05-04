@@ -271,8 +271,6 @@ public class Enemy_scr : MonoBehaviour
                         path = GetPath(playerObj.transform.position);
 
                         pointIndex = 0;
-
-                        //curGetPathDelay = 0.0f;
                     }
                 }
 
