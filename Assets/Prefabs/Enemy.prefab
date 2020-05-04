@@ -283,7 +283,15 @@ MonoBehaviour:
   lineSightObj: {fileID: 3719550399588944658}
   getPathDelay: 0.3
   nextPointDistence: 0.5
+  obstacleMapCollider: {fileID: 0}
+  windowMapCollider: {fileID: 0}
+  generalLineCollider: {fileID: 4629733543384930883, guid: 5a7e5d91bfecc17429b03e2e109f37cb,
+    type: 3}
+  generalPointCollider: {fileID: 9163815399363590741, guid: 1ba1a6dcc49feed47a356c6b7485fc1f,
+    type: 3}
   pathLine: {fileID: 1451558352377223197, guid: 99b6cd99f2bb61d479fc5fa855a1cdc7,
+    type: 3}
+  longPathLine: {fileID: 1451558352377223197, guid: 93be342ce855aa943893e28f6f76c6df,
     type: 3}
 --- !u!50 &3365890479121393660
 Rigidbody2D:
