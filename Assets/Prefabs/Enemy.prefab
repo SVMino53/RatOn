@@ -184,6 +184,7 @@ GameObject:
   - component: {fileID: 3365890479121393662}
   - component: {fileID: 3365890479121393651}
   - component: {fileID: 3365890479121393660}
+  - component: {fileID: 8868767024250405603}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -278,7 +279,20 @@ MonoBehaviour:
   viewAngleDegrees: 40
   isTalking: 0
   obstacleTag: Obstacle
+  windowTag: Window
   lineSightObj: {fileID: 3719550399588944658}
+  getPathDelay: 0.3
+  nextPointDistence: 0.5
+  obstacleMapCollider: {fileID: 0}
+  windowMapCollider: {fileID: 0}
+  generalLineCollider: {fileID: 4629733543384930883, guid: 5a7e5d91bfecc17429b03e2e109f37cb,
+    type: 3}
+  generalPointCollider: {fileID: 9163815399363590741, guid: 1ba1a6dcc49feed47a356c6b7485fc1f,
+    type: 3}
+  pathLine: {fileID: 1451558352377223197, guid: 99b6cd99f2bb61d479fc5fa855a1cdc7,
+    type: 3}
+  longPathLine: {fileID: 1451558352377223197, guid: 93be342ce855aa943893e28f6f76c6df,
+    type: 3}
 --- !u!50 &3365890479121393660
 Rigidbody2D:
   serializedVersion: 4
@@ -287,19 +301,35 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3365890479121393663}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0
   m_Material: {fileID: 0}
-  m_Interpolate: 0
+  m_Interpolate: 2
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
+--- !u!58 &8868767024250405603
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3365890479121393663}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.3
 --- !u!1 &3719550399588944658
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,7 +371,7 @@ EdgeCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
