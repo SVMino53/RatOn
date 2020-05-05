@@ -11,6 +11,7 @@ public class Player_scr : MonoBehaviour
     Vector2 faceDirection;
     bool run;
     bool standStill;
+    bool shrink;
     bool record;
 
 
@@ -22,7 +23,10 @@ public class Player_scr : MonoBehaviour
     }
     public State curState = State.STANDING;
 
+    public bool isTiny = false;
     public bool isRecording = false;
+
+    public bool isChased = false;
 
     public float walkSpeed = 1.0f;
     public float runSpeed = 1.5f;
@@ -55,6 +59,9 @@ public class Player_scr : MonoBehaviour
 
         controls.Gameplay.StandStill.performed += ctx => standStill = true;
         controls.Gameplay.StandStill.canceled += ctx => standStill = false;
+
+        controls.Gameplay.Shrink.performed += ctx => shrink = true;
+        controls.Gameplay.Shrink.canceled += ctx => shrink = false;
 
         controls.Gameplay.Record.performed += ctx => record = true;
         controls.Gameplay.Record.canceled += ctx => record = false;
@@ -125,7 +132,7 @@ public class Player_scr : MonoBehaviour
     {
         if (collision.CompareTag(enemyTag))
         {
-            if (record && collision.GetComponent<Enemy_scr>().isTalking && secretValue < maxSecretValue)
+            if (record && collision.GetComponent<Enemy_scr>().isTalking && secretValue < maxSecretValue && !isChased)
             {
                 secretValue += Time.deltaTime * recordingScoreIncrement;
                 secretBarFill.fillAmount = secretValue / maxSecretValue;
