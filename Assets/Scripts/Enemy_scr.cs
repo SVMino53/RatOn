@@ -271,8 +271,6 @@ public class Enemy_scr : MonoBehaviour
                         path = GetPath(playerObj.transform.position);
 
                         pointIndex = 0;
-
-                        //curGetPathDelay = 0.0f;
                     }
                 }
 
@@ -287,6 +285,8 @@ public class Enemy_scr : MonoBehaviour
 
                 transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);
             }
+
+            playerObj.GetComponent<Player_scr>().isChased = true;
         }
         else if (curState == State.LOSING)
         {

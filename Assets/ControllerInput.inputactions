@@ -1,5 +1,5 @@
 {
-    "name": "SwitchController",
+    "name": "ControllerInput",
     "maps": [
         {
             "name": "Gameplay",
@@ -25,6 +25,22 @@
                     "name": "StandStill",
                     "type": "Button",
                     "id": "97064bd1-03d9-4ada-af26-43b6585ddc27",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Record",
+                    "type": "Button",
+                    "id": "fc9d8bbd-d7d5-48a9-b4c2-fbf47495ecca",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Shrink",
+                    "type": "Button",
+                    "id": "53e5b787-e474-4ebf-a358-cbe5f6db2ae3",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
@@ -61,6 +77,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "StandStill",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "57af4162-25d5-4a8d-9e50-4e6fb63dc8c8",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Record",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "376643e9-c8b9-4a7c-b3c2-87ddac475452",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Shrink",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
