@@ -12,6 +12,7 @@ public class Player_scr : MonoBehaviour
     bool run;
     bool standStill;
     bool shrink;
+    bool inputShrinkImpulse = false;
     bool record;
 
 
@@ -25,7 +26,6 @@ public class Player_scr : MonoBehaviour
 
     public bool isTiny = false;
     public bool isRecording = false;
-
     public bool isChased = false;
 
     public float walkSpeed = 1.0f;
@@ -40,11 +40,16 @@ public class Player_scr : MonoBehaviour
 
     public Image secretBarFill;
 
+    public Sprite normalSprite;
+    public Sprite tinySprite;
+
 
     public float secretValue = 0.0f;
 
 
     //Rigidbody2D rb;
+
+    SpriteRenderer spriteRenderer;
 
 
     private void Awake()
@@ -71,11 +76,34 @@ public class Player_scr : MonoBehaviour
     void Start()
     {
         secretBarFill.fillAmount = 0.0f;
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (shrink && !inputShrinkImpulse)
+        {
+            if (!isTiny)
+            {
+                isTiny = true;
+
+                spriteRenderer.sprite = tinySprite;
+            }
+            else
+            {
+                isTiny = false;
+
+                spriteRenderer.sprite = normalSprite;
+            }
+            inputShrinkImpulse = true;
+        }
+        else if (!shrink && inputShrinkImpulse)
+        {
+            inputShrinkImpulse = false;
+        }
+
         if (faceDirection.x < -inputSensitivityOffset ||
             faceDirection.x > inputSensitivityOffset ||
             faceDirection.y < -inputSensitivityOffset ||
@@ -132,7 +160,7 @@ public class Player_scr : MonoBehaviour
     {
         if (collision.CompareTag(enemyTag))
         {
-            if (record && collision.GetComponent<Enemy_scr>().isTalking && secretValue < maxSecretValue && !isChased)
+            if (record && collision.GetComponent<Enemy_scr>().isTalking && secretValue < maxSecretValue && !isChased && !isTiny)
             {
                 secretValue += Time.deltaTime * recordingScoreIncrement;
                 secretBarFill.fillAmount = secretValue / maxSecretValue;
