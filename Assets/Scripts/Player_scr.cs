@@ -43,6 +43,8 @@ public class Player_scr : MonoBehaviour
     public Sprite normalSprite;
     public Sprite tinySprite;
 
+    public SpriteRenderer recordAreaSpriteRenderer;
+
 
     public float secretValue = 0.0f;
 
@@ -143,6 +145,15 @@ public class Player_scr : MonoBehaviour
         else
         {
             curState = State.STANDING;
+        }
+
+        if (record && secretValue < maxSecretValue && !isChased && !isTiny)
+        {
+            recordAreaSpriteRenderer.enabled = true;
+        }
+        else
+        {
+            recordAreaSpriteRenderer.enabled = false;
         }
     }
 
