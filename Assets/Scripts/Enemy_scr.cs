@@ -16,6 +16,8 @@ public class Enemy_scr : MonoBehaviour
 
     public State curState = State.IDLE;
 
+    public List<Vector2> strollPath;
+
     public float walkSpeed = 1.0f;
     public float runSpeed = 1.5f;
     public float rotationSpeed = 10.0f;
@@ -38,6 +40,7 @@ public class Enemy_scr : MonoBehaviour
 
     public float nextPointDistence = 0.2f;
     int pointIndex = 0;
+    int strollPointIndex = 0;
 
     public Collider2D obstacleMapCollider;
     public Collider2D windowMapCollider;
@@ -239,6 +242,21 @@ public class Enemy_scr : MonoBehaviour
     void Start()
     {
         lineCollider = lineSightObj.GetComponent<EdgeCollider2D>();
+
+        if (strollPath == null)
+        {
+            curState = State.IDLE;
+        }
+        else if (strollPath.Count == 1)
+        {
+            curState = State.IDLE;
+            transform.position = strollPath[0];
+        }
+        else
+        {
+            curState = State.STROLLING;
+            transform.position = strollPath[0];
+        }
     }
 
     // Update is called once per frame
@@ -252,7 +270,30 @@ public class Enemy_scr : MonoBehaviour
         }
         else if (curState == State.STROLLING)
         {
+            float enemyToStrollPathPointDistance = (strollPath[strollPointIndex] - position2d).magnitude;
 
+            if (enemyToStrollPathPointDistance <= nextPointDistence)
+            {
+                if (strollPointIndex < strollPath.Count - 1)
+                {
+                    strollPointIndex++;
+                }
+                else
+                {
+                    strollPointIndex = 0;
+                }
+            }
+
+            Vector2 goToPoint = strollPath[strollPointIndex];
+
+            Vector2 direction = -transform.position;
+            direction += goToPoint;
+
+            transform.Translate(direction.normalized * walkSpeed * Time.deltaTime, Space.World);
+
+            float angle = Vector2.SignedAngle(Vector2.up, direction.normalized);
+
+            transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);
         }
         else if (curState == State.CHASING)
         {

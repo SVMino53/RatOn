@@ -270,8 +270,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0c5d6854aa0e2041bf86cc68e2d600b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testing: 0
   curState: 0
-  walkSpeed: 3.5
+  strollPath: []
+  walkSpeed: 2.5
   runSpeed: 4.5
   rotationSpeed: 10
   playerObj: {fileID: 0}
