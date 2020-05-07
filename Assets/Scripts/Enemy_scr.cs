@@ -16,6 +16,8 @@ public class Enemy_scr : MonoBehaviour
 
     public State curState = State.IDLE;
 
+    public List<Vector2> strollPath;
+
     public float walkSpeed = 1.0f;
     public float runSpeed = 1.5f;
     public float rotationSpeed = 10.0f;
@@ -38,6 +40,7 @@ public class Enemy_scr : MonoBehaviour
 
     public float nextPointDistence = 0.2f;
     int pointIndex = 0;
+    int strollPointIndex = 0;
 
     public Collider2D obstacleMapCollider;
     public Collider2D windowMapCollider;
@@ -45,11 +48,19 @@ public class Enemy_scr : MonoBehaviour
     public EdgeCollider2D generalLineCollider;
     public CircleCollider2D generalPointCollider;
 
+    public float losingTime = 5.0f;
+    float curLosingTime = 0.0f;
+
     EdgeCollider2D lineCollider;
 
     List<Vector2> path;
 
     ContactFilter2D cf = new ContactFilter2D();
+
+    bool getPathOnce = true;
+
+    // TEMPORARY
+    bool isSecondPath = false;
 
     // For testing
     public LineRenderer pathLine;
@@ -239,6 +250,21 @@ public class Enemy_scr : MonoBehaviour
     void Start()
     {
         lineCollider = lineSightObj.GetComponent<EdgeCollider2D>();
+
+        if (strollPath.Count == 0)
+        {
+            curState = State.IDLE;
+        }
+        else if (strollPath.Count == 1)
+        {
+            curState = State.IDLE;
+            transform.position = strollPath[0];
+        }
+        else
+        {
+            curState = State.STROLLING;
+            transform.position = strollPath[0];
+        }
     }
 
     // Update is called once per frame
@@ -252,7 +278,30 @@ public class Enemy_scr : MonoBehaviour
         }
         else if (curState == State.STROLLING)
         {
+            float enemyToStrollPathPointDistance = (strollPath[strollPointIndex] - position2d).magnitude;
 
+            if (enemyToStrollPathPointDistance <= nextPointDistence)
+            {
+                if (strollPointIndex < strollPath.Count - 1)
+                {
+                    strollPointIndex++;
+                }
+                else
+                {
+                    strollPointIndex = 0;
+                }
+            }
+
+            Vector2 goToPoint = strollPath[strollPointIndex];
+
+            Vector2 direction = -transform.position;
+            direction += goToPoint;
+
+            transform.Translate(direction.normalized * walkSpeed * Time.deltaTime, Space.World);
+
+            float angle = Vector2.SignedAngle(Vector2.up, direction.normalized);
+
+            transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);
         }
         else if (curState == State.CHASING)
         {
@@ -268,9 +317,27 @@ public class Enemy_scr : MonoBehaviour
                     }
                     else
                     {
-                        path = GetPath(playerObj.transform.position);
+                        if (!isSecondPath)
+                        {
+                            path = GetPath(playerObj.transform.position);
 
-                        pointIndex = 0;
+                            pointIndex = 0;
+
+                            isSecondPath = true;
+                        }
+                        else
+                        {
+                            curState = State.LOSING;
+
+                            curLosingTime = 0.0f;
+
+                            if (strollPath.Count == 1)
+                            {
+                                path = GetPath(strollPath[0]);
+
+                                pointIndex = 0;
+                            }
+                        }
                     }
                 }
 
@@ -290,7 +357,96 @@ public class Enemy_scr : MonoBehaviour
         }
         else if (curState == State.LOSING)
         {
+            if (curLosingTime < losingTime)
+            {
+                curLosingTime += Time.deltaTime;
+            }
+            else
+            {
+                if (strollPath.Count == 0)
+                {
+                    curState = State.IDLE;
+                }
+                else if (strollPath.Count == 1)
+                {
+                    float enemyToPathPointDistance = (path[pointIndex] - position2d).magnitude;
 
+                    if (enemyToPathPointDistance <= nextPointDistence)
+                    {
+                        if (pointIndex < path.Count - 1)
+                        {
+                            pointIndex++;
+                        }
+                        else
+                        {
+                            curState = State.IDLE;
+                        }
+                    }
+
+                    Vector2 goToPoint = path[pointIndex];
+
+                    Vector2 direction = -transform.position;
+                    direction += goToPoint;
+
+                    transform.Translate(direction.normalized * walkSpeed * Time.deltaTime, Space.World);
+
+                    float angle = Vector2.SignedAngle(Vector2.up, direction.normalized);
+
+                    transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);
+                }
+                else
+                {
+                    Vector2 closestPoint = strollPath[0];
+
+                    if (getPathOnce)
+                    {
+                        for (int i = 1; i < strollPath.Count; i++)
+                        {
+                            if (Vector2.Distance(position2d, strollPath[i]) < Vector2.Distance(position2d, closestPoint))
+                            {
+                                closestPoint = strollPath[i];
+
+                                strollPointIndex = i;
+                            }
+                        }
+
+                        path = GetPath(closestPoint);
+
+                        pointIndex = 0;
+
+                        getPathOnce = false;
+                    }
+                    else
+                    {
+                        float enemyToPathPointDistance = (path[pointIndex] - position2d).magnitude;
+
+                        if (enemyToPathPointDistance <= nextPointDistence)
+                        {
+                            if (pointIndex < path.Count - 1)
+                            {
+                                pointIndex++;
+                            }
+                            else
+                            {
+                                curState = State.STROLLING;
+                            }
+                        }
+
+                        Vector2 goToPoint = path[pointIndex];
+
+                        Vector2 direction = -transform.position;
+                        direction += goToPoint;
+
+                        transform.Translate(direction.normalized * walkSpeed * Time.deltaTime, Space.World);
+
+                        float angle = Vector2.SignedAngle(Vector2.up, direction.normalized);
+
+                        transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);
+                    }
+                }
+
+                playerObj.GetComponent<Player_scr>().isChased = false;
+            }
         }
 
         float playerDistance = Vector3.Distance(transform.position, playerObj.transform.position);
@@ -332,6 +488,8 @@ public class Enemy_scr : MonoBehaviour
                     path = GetPath(playerObj.transform.position);
 
                     pointIndex = 0;
+
+                    isSecondPath = false;
 
                     //curGetPathDelay = getPathDelay;
 
