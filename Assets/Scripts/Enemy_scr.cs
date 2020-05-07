@@ -251,7 +251,7 @@ public class Enemy_scr : MonoBehaviour
     {
         lineCollider = lineSightObj.GetComponent<EdgeCollider2D>();
 
-        if (strollPath == null)
+        if (strollPath.Count == 0)
         {
             curState = State.IDLE;
         }
@@ -363,7 +363,7 @@ public class Enemy_scr : MonoBehaviour
             }
             else
             {
-                if (strollPath == null)
+                if (strollPath.Count == 0)
                 {
                     curState = State.IDLE;
                 }
