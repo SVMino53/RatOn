@@ -8,6 +8,15 @@ public class Player_scr : MonoBehaviour
 {
     ControllerInput controls;
 
+    public KeyCode moveUpK = KeyCode.UpArrow;
+    public KeyCode moveDownK = KeyCode.DownArrow;
+    public KeyCode moveLeftK = KeyCode.LeftArrow;
+    public KeyCode moveRightK = KeyCode.RightArrow;
+    public KeyCode runK = KeyCode.LeftShift;
+    public KeyCode standStillK = KeyCode.LeftControl;
+    public KeyCode shrinkK = KeyCode.Z;
+    public KeyCode recordK = KeyCode.X;
+
     Vector2 faceDirection;
     bool run;
     bool standStill;
@@ -85,7 +94,7 @@ public class Player_scr : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (shrink && !inputShrinkImpulse)
+        if (shrink && !inputShrinkImpulse || Input.GetKeyDown(shrinkK))
         {
             if (!isTiny)
             {
@@ -101,7 +110,7 @@ public class Player_scr : MonoBehaviour
             }
             inputShrinkImpulse = true;
         }
-        else if (!shrink && inputShrinkImpulse)
+        else if (!shrink && inputShrinkImpulse || Input.GetKeyDown(shrinkK))
         {
             inputShrinkImpulse = false;
         }
@@ -139,15 +148,70 @@ public class Player_scr : MonoBehaviour
             {
                 curState = State.STANDING;
             }
-
-            isRecording = record;
         }
         else
         {
-            curState = State.STANDING;
+            Vector2 moveDirection = Vector2.zero;
+
+            if (Input.GetKey(moveUpK))
+            {
+                moveDirection.y = 1.0f;
+            }
+            if (Input.GetKey(moveDownK))
+            {
+                moveDirection.y = -1.0f;
+            }
+            if (Input.GetKey(moveLeftK))
+            {
+                moveDirection.x = -1.0f;
+            }
+            if (Input.GetKey(moveRightK))
+            {
+                moveDirection.x = 1.0f;
+            }
+
+            moveDirection.Normalize();
+
+            float angle = Mathf.Asin(moveDirection.normalized.x);
+            angle *= -Mathf.Rad2Deg;
+            if (moveDirection.y < 0.0f)
+            {
+                angle += 180.0f;
+                angle *= -1.0f;
+            }
+            Quaternion newRotation = Quaternion.Euler(0.0f, 0.0f, angle);
+
+            transform.rotation = newRotation;
+
+            if (!Input.GetKey(standStillK))
+            {
+                if (Input.GetKey(runK))
+                {
+                    transform.Translate(moveDirection * runSpeed * Time.deltaTime, Space.World);
+                    curState = State.RUNNING;
+                }
+                else
+                {
+                    transform.Translate(moveDirection * walkSpeed * Time.deltaTime, Space.World);
+                    curState = State.WALKING;
+                }
+            }
+            else
+            {
+                curState = State.STANDING;
+            }
         }
 
-        if (record && secretValue < maxSecretValue && !isChased && !isTiny)
+        if (record || Input.GetKey(recordK))
+        {
+            isRecording = true;
+        }
+        else
+        {
+            isRecording = false;
+        }
+
+        if (isRecording && secretValue < maxSecretValue && !isChased && !isTiny)
         {
             recordAreaSpriteRenderer.enabled = true;
         }
@@ -171,7 +235,7 @@ public class Player_scr : MonoBehaviour
     {
         if (collision.CompareTag(enemyTag))
         {
-            if (record && collision.GetComponent<Enemy_scr>().isTalking && secretValue < maxSecretValue && !isChased && !isTiny)
+            if (isRecording && collision.GetComponent<Enemy_scr>().isTalking && secretValue < maxSecretValue && !isChased && !isTiny)
             {
                 secretValue += Time.deltaTime * recordingScoreIncrement;
                 secretBarFill.fillAmount = secretValue / maxSecretValue;
