@@ -41,6 +41,22 @@ public class @ControllerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Record"",
+                    ""type"": ""Button"",
+                    ""id"": ""fc9d8bbd-d7d5-48a9-b4c2-fbf47495ecca"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Shrink"",
+                    ""type"": ""Button"",
+                    ""id"": ""53e5b787-e474-4ebf-a358-cbe5f6db2ae3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -76,6 +92,28 @@ public class @ControllerInput : IInputActionCollection, IDisposable
                     ""action"": ""StandStill"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""57af4162-25d5-4a8d-9e50-4e6fb63dc8c8"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Record"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""376643e9-c8b9-4a7c-b3c2-87ddac475452"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shrink"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -87,6 +125,8 @@ public class @ControllerInput : IInputActionCollection, IDisposable
         m_Gameplay_Move = m_Gameplay.FindAction("Move", throwIfNotFound: true);
         m_Gameplay_Run = m_Gameplay.FindAction("Run", throwIfNotFound: true);
         m_Gameplay_StandStill = m_Gameplay.FindAction("StandStill", throwIfNotFound: true);
+        m_Gameplay_Record = m_Gameplay.FindAction("Record", throwIfNotFound: true);
+        m_Gameplay_Shrink = m_Gameplay.FindAction("Shrink", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -139,6 +179,8 @@ public class @ControllerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_Move;
     private readonly InputAction m_Gameplay_Run;
     private readonly InputAction m_Gameplay_StandStill;
+    private readonly InputAction m_Gameplay_Record;
+    private readonly InputAction m_Gameplay_Shrink;
     public struct GameplayActions
     {
         private @ControllerInput m_Wrapper;
@@ -146,6 +188,8 @@ public class @ControllerInput : IInputActionCollection, IDisposable
         public InputAction @Move => m_Wrapper.m_Gameplay_Move;
         public InputAction @Run => m_Wrapper.m_Gameplay_Run;
         public InputAction @StandStill => m_Wrapper.m_Gameplay_StandStill;
+        public InputAction @Record => m_Wrapper.m_Gameplay_Record;
+        public InputAction @Shrink => m_Wrapper.m_Gameplay_Shrink;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -164,6 +208,12 @@ public class @ControllerInput : IInputActionCollection, IDisposable
                 @StandStill.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnStandStill;
                 @StandStill.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnStandStill;
                 @StandStill.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnStandStill;
+                @Record.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRecord;
+                @Record.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRecord;
+                @Record.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRecord;
+                @Shrink.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShrink;
+                @Shrink.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShrink;
+                @Shrink.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShrink;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -177,6 +227,12 @@ public class @ControllerInput : IInputActionCollection, IDisposable
                 @StandStill.started += instance.OnStandStill;
                 @StandStill.performed += instance.OnStandStill;
                 @StandStill.canceled += instance.OnStandStill;
+                @Record.started += instance.OnRecord;
+                @Record.performed += instance.OnRecord;
+                @Record.canceled += instance.OnRecord;
+                @Shrink.started += instance.OnShrink;
+                @Shrink.performed += instance.OnShrink;
+                @Shrink.canceled += instance.OnShrink;
             }
         }
     }
@@ -186,5 +242,7 @@ public class @ControllerInput : IInputActionCollection, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
         void OnStandStill(InputAction.CallbackContext context);
+        void OnRecord(InputAction.CallbackContext context);
+        void OnShrink(InputAction.CallbackContext context);
     }
 }
