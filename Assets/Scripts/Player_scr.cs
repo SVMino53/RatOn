@@ -2,22 +2,65 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class Player_scr : MonoBehaviour
 {
     ControllerInput controls;
 
+    public KeyCode moveUpK = KeyCode.UpArrow;
+    public KeyCode moveDownK = KeyCode.DownArrow;
+    public KeyCode moveLeftK = KeyCode.LeftArrow;
+    public KeyCode moveRightK = KeyCode.RightArrow;
+    public KeyCode runK = KeyCode.LeftShift;
+    public KeyCode standStillK = KeyCode.LeftControl;
+    public KeyCode shrinkK = KeyCode.Z;
+    public KeyCode recordK = KeyCode.X;
+
     Vector2 faceDirection;
     bool run;
     bool standStill;
+    bool shrink;
+    bool inputShrinkImpulse = false;
+    bool record;
 
+
+    public enum State
+    {
+        STANDING,
+        WALKING,
+        RUNNING
+    }
+    public State curState = State.STANDING;
+
+    public bool isTiny = false;
+    public bool isRecording = false;
+    public bool isChased = false;
 
     public float walkSpeed = 1.0f;
     public float runSpeed = 1.5f;
 
     public float inputSensitivityOffset = 0.001f;
 
-    Rigidbody2D rb;
+    public string enemyTag = "Enemy";
+
+    public float recordingScoreIncrement = 1.0f;
+    public float maxSecretValue = 100.0f;
+
+    public Image secretBarFill;
+
+    public Sprite normalSprite;
+    public Sprite tinySprite;
+
+    public SpriteRenderer recordAreaSpriteRenderer;
+
+
+    public float secretValue = 0.0f;
+
+
+    //Rigidbody2D rb;
+
+    SpriteRenderer spriteRenderer;
 
 
     private void Awake()
@@ -32,17 +75,46 @@ public class Player_scr : MonoBehaviour
 
         controls.Gameplay.StandStill.performed += ctx => standStill = true;
         controls.Gameplay.StandStill.canceled += ctx => standStill = false;
+
+        controls.Gameplay.Shrink.performed += ctx => shrink = true;
+        controls.Gameplay.Shrink.canceled += ctx => shrink = false;
+
+        controls.Gameplay.Record.performed += ctx => record = true;
+        controls.Gameplay.Record.canceled += ctx => record = false;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        secretBarFill.fillAmount = 0.0f;
+
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (shrink && !inputShrinkImpulse || Input.GetKeyDown(shrinkK))
+        {
+            if (!isTiny)
+            {
+                isTiny = true;
+
+                spriteRenderer.sprite = tinySprite;
+            }
+            else
+            {
+                isTiny = false;
+
+                spriteRenderer.sprite = normalSprite;
+            }
+            inputShrinkImpulse = true;
+        }
+        else if (!shrink && inputShrinkImpulse || Input.GetKeyDown(shrinkK))
+        {
+            inputShrinkImpulse = false;
+        }
+
         if (faceDirection.x < -inputSensitivityOffset ||
             faceDirection.x > inputSensitivityOffset ||
             faceDirection.y < -inputSensitivityOffset ||
@@ -64,45 +136,89 @@ public class Player_scr : MonoBehaviour
                 if (run)
                 {
                     transform.Translate(faceDirection * runSpeed * Time.deltaTime, Space.World);
+                    curState = State.RUNNING;
                 }
                 else
                 {
                     transform.Translate(faceDirection * walkSpeed * Time.deltaTime, Space.World);
+                    curState = State.WALKING;
                 }
             }
+            else
+            {
+                curState = State.STANDING;
+            }
         }
-        
-        //Vector3 direction = new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0.0f);
-        //direction.Normalize();
+        else
+        {
+            Vector2 moveDirection = Vector2.zero;
 
-        //if (direction.x < -inputSensitivityOffset ||
-        //    direction.x > inputSensitivityOffset ||
-        //    direction.y < -inputSensitivityOffset ||
-        //    direction.y > inputSensitivityOffset)
-        //{
-        //    float angle = Mathf.Asin(direction.x);
-        //    angle *= -Mathf.Rad2Deg;
-        //    if (Input.GetAxis("Vertical") < 0.0f)
-        //    {
-        //        angle += 180.0f;
-        //        angle *= -1.0f;
-        //    }
-        //    Quaternion newRotation = Quaternion.Euler(0.0f, 0.0f, angle);
+            if (Input.GetKey(moveUpK))
+            {
+                moveDirection.y = 1.0f;
+            }
+            if (Input.GetKey(moveDownK))
+            {
+                moveDirection.y = -1.0f;
+            }
+            if (Input.GetKey(moveLeftK))
+            {
+                moveDirection.x = -1.0f;
+            }
+            if (Input.GetKey(moveRightK))
+            {
+                moveDirection.x = 1.0f;
+            }
 
-        //    transform.rotation = newRotation;
+            moveDirection.Normalize();
 
-        //    if (Input.GetAxis("Stand Still") <= 0.0f)
-        //    {
-        //        if (Input.GetAxis("Run") > 0.0f)
-        //        {
-        //            transform.Translate(direction * runSpeed * Time.deltaTime, Space.World);
-        //        }
-        //        else
-        //        {
-        //            transform.Translate(direction * walkSpeed * Time.deltaTime, Space.World);
-        //        }
-        //    }
-        //}
+            float angle = Mathf.Asin(moveDirection.normalized.x);
+            angle *= -Mathf.Rad2Deg;
+            if (moveDirection.y < 0.0f)
+            {
+                angle += 180.0f;
+                angle *= -1.0f;
+            }
+            Quaternion newRotation = Quaternion.Euler(0.0f, 0.0f, angle);
+
+            transform.rotation = newRotation;
+
+            if (!Input.GetKey(standStillK))
+            {
+                if (Input.GetKey(runK))
+                {
+                    transform.Translate(moveDirection * runSpeed * Time.deltaTime, Space.World);
+                    curState = State.RUNNING;
+                }
+                else
+                {
+                    transform.Translate(moveDirection * walkSpeed * Time.deltaTime, Space.World);
+                    curState = State.WALKING;
+                }
+            }
+            else
+            {
+                curState = State.STANDING;
+            }
+        }
+
+        if (record || Input.GetKey(recordK))
+        {
+            isRecording = true;
+        }
+        else
+        {
+            isRecording = false;
+        }
+
+        if (isRecording && secretValue < maxSecretValue && !isChased && !isTiny)
+        {
+            recordAreaSpriteRenderer.enabled = true;
+        }
+        else
+        {
+            recordAreaSpriteRenderer.enabled = false;
+        }
     }
 
     private void OnEnable()
@@ -113,5 +229,17 @@ public class Player_scr : MonoBehaviour
     private void OnDisable()
     {
         controls.Gameplay.Disable();
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag(enemyTag))
+        {
+            if (isRecording && collision.GetComponent<Enemy_scr>().isTalking && secretValue < maxSecretValue && !isChased && !isTiny)
+            {
+                secretValue += Time.deltaTime * recordingScoreIncrement;
+                secretBarFill.fillAmount = secretValue / maxSecretValue;
+            }
+        }
     }
 }
