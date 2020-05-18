@@ -273,8 +273,8 @@ MonoBehaviour:
   testing: 0
   curState: 0
   strollPath: []
-  walkSpeed: 2.5
-  runSpeed: 4.5
+  walkSpeed: 1.5
+  runSpeed: 3.5
   rotationSpeed: 10
   playerObj: {fileID: 0}
   viewDistance: 6
@@ -294,7 +294,7 @@ MonoBehaviour:
   losingTime: 5
   minTalkingTime: 8
   maxTalkingTime: 20
-  chanceOfTalking: 0.083
+  chanceOfTalking: 0.1
   chanceOfTalkingInterval: 0.5
   minTimeToWannaTalk: 30
   mainSprite: {fileID: 21300000, guid: 199acaca518a1804ebe499d147f63128, type: 3}
