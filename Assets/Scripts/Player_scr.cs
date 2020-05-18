@@ -62,6 +62,8 @@ public class Player_scr : MonoBehaviour
 
     SpriteRenderer spriteRenderer;
 
+    CircleCollider2D[] colliders;
+
 
     private void Awake()
     {
@@ -89,6 +91,10 @@ public class Player_scr : MonoBehaviour
         secretBarFill.fillAmount = 0.0f;
 
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        colliders = GetComponents<CircleCollider2D>();
+
+        colliders[1].enabled = false;
     }
 
     // Update is called once per frame
@@ -101,12 +107,18 @@ public class Player_scr : MonoBehaviour
                 isTiny = true;
 
                 spriteRenderer.sprite = tinySprite;
+
+                colliders[0].enabled = false;
+                colliders[1].enabled = true;
             }
             else
             {
                 isTiny = false;
 
                 spriteRenderer.sprite = normalSprite;
+
+                colliders[1].enabled = false;
+                colliders[0].enabled = true;
             }
             inputShrinkImpulse = true;
         }
