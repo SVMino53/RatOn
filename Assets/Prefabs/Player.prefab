@@ -111,6 +111,7 @@ GameObject:
   - component: {fileID: 5384027174426745796}
   - component: {fileID: 5384027174426745797}
   - component: {fileID: 5384027174426745802}
+  - component: {fileID: 882897469412293747}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -195,6 +196,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22eebf0ce37bf2740a50a5ee3684c717, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveUpK: 273
+  moveDownK: 274
+  moveLeftK: 276
+  moveRightK: 275
+  runK: 304
+  standStillK: 306
+  shrinkK: 122
+  recordK: 120
   curState: 0
   isTiny: 0
   isRecording: 0
@@ -247,3 +256,19 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.3
+--- !u!58 &882897469412293747
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5384027174426745803}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.15
