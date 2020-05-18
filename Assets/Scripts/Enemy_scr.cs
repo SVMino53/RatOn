@@ -157,25 +157,25 @@ public class Enemy_scr : MonoBehaviour
             reachedPoints.Add(curPoint);
 
             nextPoint.y += 1.0f;
-            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
+            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
             {
                 potentialPoints.Add(nextPoint);
             }
             nextPoint.y -= 1.0f;
             nextPoint.x += 1.0f;
-            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
+            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
             {
                 potentialPoints.Add(nextPoint);
             }
             nextPoint.y -= 1.0f;
             nextPoint.x -= 1.0f;
-            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
+            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
             {
                 potentialPoints.Add(nextPoint);
             }
             nextPoint.y += 1.0f;
             nextPoint.x -= 1.0f;
-            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
+            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
             {
                 potentialPoints.Add(nextPoint);
             }
@@ -222,7 +222,8 @@ public class Enemy_scr : MonoBehaviour
 
                 for (int i = allPathPoints.Count - 1; i >= 0; i--)
                 {
-                    if (!GetLineIsCollidingWith(curReachablePoint, allPathPoints[i], obstacleMapCollider, 0.1f))
+                    if (!GetLineIsCollidingWith(curReachablePoint, allPathPoints[i], obstacleMapCollider, 0.1f) &&
+                        !GetLineIsCollidingWith(curReachablePoint, allPathPoints[i], windowMapCollider, 0.1f))
                     {
                         curReachablePoint = allPathPoints[i];
                         path.Add(curReachablePoint);
@@ -325,6 +326,11 @@ public class Enemy_scr : MonoBehaviour
                     isTalking = false;
                     talkingTime = 0.0f;
                     GetComponent<SpriteRenderer>().sprite = mainSprite;
+
+                    if (strollPath.Count > 1)
+                    {
+                        curState = State.STROLLING;
+                    }
                 }
                 else if (talkingTime >= minTalkingTime && Random.Range(minTalkingTime, maxTalkingTime) < talkingTime)
                 {
@@ -332,6 +338,11 @@ public class Enemy_scr : MonoBehaviour
                     isTalking = false;
                     talkingTime = 0.0f;
                     GetComponent<SpriteRenderer>().sprite = mainSprite;
+
+                    if (strollPath.Count > 1)
+                    {
+                        curState = State.STROLLING;
+                    }
                 }
                 else
                 {
@@ -559,6 +570,10 @@ public class Enemy_scr : MonoBehaviour
                     pointIndex = 0;
 
                     isSecondPath = false;
+
+                    isTalking = false;
+
+                    GetComponent<SpriteRenderer>().sprite = mainSprite;
 
                     //curGetPathDelay = getPathDelay;
 
