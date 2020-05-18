@@ -291,6 +291,14 @@ MonoBehaviour:
     type: 3}
   generalPointCollider: {fileID: 9163815399363590741, guid: 1ba1a6dcc49feed47a356c6b7485fc1f,
     type: 3}
+  losingTime: 5
+  minTalkingTime: 8
+  maxTalkingTime: 20
+  chanceOfTalking: 0.083
+  chanceOfTalkingInterval: 0.5
+  minTimeToWannaTalk: 30
+  mainSprite: {fileID: 21300000, guid: 199acaca518a1804ebe499d147f63128, type: 3}
+  talkSprite: {fileID: 21300000, guid: ad3315b76a5ebce4ebf6a4cd072fafda, type: 3}
   pathLine: {fileID: 1451558352377223197, guid: 99b6cd99f2bb61d479fc5fa855a1cdc7,
     type: 3}
   longPathLine: {fileID: 1451558352377223197, guid: 93be342ce855aa943893e28f6f76c6df,
