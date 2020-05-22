@@ -286,7 +286,7 @@ MonoBehaviour:
   rows: 5
   columns: 9
   selectScale: {x: 1.2, y: 1.2, z: 1}
-  selectButtonColor: {r: 0.6603774, g: 0, b: 0, a: 1}
+  selectButtonColor: {r: 1, g: 1, b: 1, a: 1}
   selectTextColor: {r: 0.5330188, g: 1, b: 0.9759187, a: 1}
   actions: 
   nextOptionDelay: 0.2

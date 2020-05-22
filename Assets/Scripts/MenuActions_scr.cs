@@ -21,7 +21,7 @@ public class MenuActions_scr : MonoBehaviour
         Application.Quit();
     }
 
-    static public void ContinueGameFromPause(List<GameObject> activateObjs, List<GameObject> deactivateObjs)
+    static public void ContinueGameFromPause(List<GameObject> activateObjs, List<GameObject> deactivateObjs, List<GameObject> enableObjs, List<GameObject> disableObjs, General_scr genaralScript)
     {
         for (int i = 0; i < activateObjs.Count; i++)
         {
@@ -32,6 +32,18 @@ public class MenuActions_scr : MonoBehaviour
         {
             deactivateObjs[i].SetActive(false);
         }
+
+        for (int i = 0; i < enableObjs.Count; i++)
+        {
+            enableObjs[i].GetComponent<MonoBehaviour>().enabled = true;
+        }
+
+        for (int i = 0; i < disableObjs.Count; i++)
+        {
+            disableObjs[i].GetComponent<MonoBehaviour>().enabled = false;
+        }
+
+        genaralScript.curGameState = General_scr.GameState.GAME;
     }
 
 
@@ -46,17 +58,17 @@ public class MenuActions_scr : MonoBehaviour
                 QuitFromMenu();
                 break;
             case Actions.ContinueGameFromPause:
-                ContinueGameFromPause(new List<GameObject>(), new List<GameObject>());
+                ContinueGameFromPause(new List<GameObject>(), new List<GameObject>(), new List<GameObject>(), new List<GameObject>(), new General_scr());
                 break;
         }
     }
 
-    static public void DoAction(Actions action, List<GameObject> activateObjs, List<GameObject> deactivateObjs)
+    static public void DoAction(Actions action, List<GameObject> activateObjs, List<GameObject> deactivateObjs, List<GameObject> enableObjs, List<GameObject> disableObjs, General_scr genaralScript)
     {
         switch (action)
         {
             case Actions.ContinueGameFromPause:
-                ContinueGameFromPause(activateObjs, deactivateObjs);
+                ContinueGameFromPause(activateObjs, deactivateObjs, enableObjs, disableObjs, genaralScript);
                 break;
         }
     }

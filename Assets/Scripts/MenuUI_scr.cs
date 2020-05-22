@@ -15,6 +15,8 @@ public class MenuUI_scr : MonoBehaviour
     bool select;
 
 
+    public General_scr generalScr;
+
     public List<GameObject> menuOptions;
     public int rows;
     public int columns;
@@ -29,6 +31,8 @@ public class MenuUI_scr : MonoBehaviour
 
     public List<GameObject> activateObjs;
     public List<GameObject> deactivateObjs;
+    public List<GameObject> enableObjs;
+    public List<GameObject> disableObjs;
 
     Vector3 mainScale;
     Color mainButtonColor;
@@ -167,11 +171,11 @@ public class MenuUI_scr : MonoBehaviour
             nextOptionTime = 0.0f;
         }
 
-        if (select)
+        if (select || Input.GetKeyDown(KeyCode.Return))
         {
-            if (index == 0)
+            if (actions[index] == MenuActions_scr.Actions.ContinueGameFromPause)
             {
-                MenuActions_scr.DoAction(actions[index], activateObjs, deactivateObjs);
+                MenuActions_scr.DoAction(actions[index], activateObjs, deactivateObjs, enableObjs, disableObjs, generalScr);
             }
             else
             {
