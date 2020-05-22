@@ -10,10 +10,14 @@ public class MenuUI_scr : MonoBehaviour
 
     bool up;
     bool down;
+    bool left;
+    bool right;
     bool select;
 
 
     public List<GameObject> menuOptions;
+    public int rows;
+    public int columns;
     public Vector3 selectScale;
     public Color selectButtonColor;
     public Color selectTextColor;
@@ -57,6 +61,12 @@ public class MenuUI_scr : MonoBehaviour
         controls.Gameplay.Down.performed += ctx => down  = true;
         controls.Gameplay.Down.canceled += ctx => down  = false;
 
+        controls.Gameplay.Left.performed += ctx => left = true;
+        controls.Gameplay.Left.canceled += ctx => left = false;
+
+        controls.Gameplay.Right.performed += ctx => right  = true;
+        controls.Gameplay.Right.canceled += ctx => right  = false;
+
         controls.Gameplay.Select.performed += ctx => select = true;
         controls.Gameplay.Select.canceled += ctx => select = false;
     }
@@ -70,7 +80,7 @@ public class MenuUI_scr : MonoBehaviour
         mainButtonColor = tempObj.GetComponent<Image>().color;
         mainTextColor = tempObj.GetComponentInChildren<Text>().color;
 
-        SelectButton(index);
+        SelectButton(0);
     }
 
     // Update is called once per frame
@@ -82,10 +92,10 @@ public class MenuUI_scr : MonoBehaviour
             {
                 DeselectButton(index);
 
-                index--;
+                index -= columns;
                 if (index < 0)
                 {
-                    index = menuOptions.Count - 1;
+                    index = menuOptions.Count + index;
                 }
 
                 SelectButton(index);
@@ -101,10 +111,48 @@ public class MenuUI_scr : MonoBehaviour
             {
                 DeselectButton(index);
 
-                index++;
+                index += columns;
                 if (index >= menuOptions.Count)
                 {
-                    index = 0;
+                    index %= columns;
+                }
+
+                SelectButton(index);
+
+                nextOptionTime = nextOptionDelay;
+            }
+
+            nextOptionTime -= Time.deltaTime;
+        }
+        else if (left || Input.GetKey(KeyCode.LeftArrow))
+        {
+            if (nextOptionTime <= 0.0f)
+            {
+                DeselectButton(index);
+
+                index -= 1;
+                if (index % columns == columns - 1 || index % columns == -1)
+                {
+                    index += columns;
+                }
+
+                SelectButton(index);
+
+                nextOptionTime = nextOptionDelay;
+            }
+
+            nextOptionTime -= Time.deltaTime;
+        }
+        else if (right || Input.GetKey(KeyCode.RightArrow))
+        {
+            if (nextOptionTime <= 0.0f)
+            {
+                DeselectButton(index);
+
+                index += 1;
+                if (index % columns == 0)
+                {
+                    index -= columns;
                 }
 
                 SelectButton(index);
