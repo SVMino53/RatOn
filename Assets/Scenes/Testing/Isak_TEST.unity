@@ -146,7 +146,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &255536903
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,8 +251,8 @@ MonoBehaviour:
   rows: 4
   columns: 1
   selectScale: {x: 1.1, y: 1.1, z: 1}
-  selectButtonColor: {r: 0.7102595, g: 0.7028302, b: 1, a: 1}
-  selectTextColor: {r: 0.3921569, g: 0.38431376, b: 0.69803923, a: 1}
+  selectButtonColor: {r: 1, g: 1, b: 1, a: 1}
+  selectTextColor: {r: 0.58709174, g: 0.57916516, b: 0.8962264, a: 1}
   actions: 02000000000000000000000001000000
   nextOptionDelay: 0.5
   activateObjs:
