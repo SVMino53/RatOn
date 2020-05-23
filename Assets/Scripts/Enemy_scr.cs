@@ -51,6 +51,19 @@ public class Enemy_scr : MonoBehaviour
     public float losingTime = 5.0f;
     float curLosingTime = 0.0f;
 
+    public float minTalkingTime = 8.0f;
+    public float maxTalkingTime = 20.0f;
+    float talkingTime = 0.0f;
+    [Range(0.0f, 1.0f)]
+    public float chanceOfTalking = 0.2f;
+    public float chanceOfTalkingInterval = 0.5f;
+    float chanceOfTalkingIntervalTime = 0.0f;
+    public float minTimeToWannaTalk = 30.0f;
+    float timeToWannaTalk = 0.0f;
+
+    public Sprite mainSprite;
+    public Sprite talkSprite;
+
     EdgeCollider2D lineCollider;
 
     List<Vector2> path;
@@ -144,25 +157,25 @@ public class Enemy_scr : MonoBehaviour
             reachedPoints.Add(curPoint);
 
             nextPoint.y += 1.0f;
-            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
+            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
             {
                 potentialPoints.Add(nextPoint);
             }
             nextPoint.y -= 1.0f;
             nextPoint.x += 1.0f;
-            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
+            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
             {
                 potentialPoints.Add(nextPoint);
             }
             nextPoint.y -= 1.0f;
             nextPoint.x -= 1.0f;
-            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
+            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
             {
                 potentialPoints.Add(nextPoint);
             }
             nextPoint.y += 1.0f;
             nextPoint.x -= 1.0f;
-            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
+            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
             {
                 potentialPoints.Add(nextPoint);
             }
@@ -209,7 +222,8 @@ public class Enemy_scr : MonoBehaviour
 
                 for (int i = allPathPoints.Count - 1; i >= 0; i--)
                 {
-                    if (!GetLineIsCollidingWith(curReachablePoint, allPathPoints[i], obstacleMapCollider, 0.1f))
+                    if (!GetLineIsCollidingWith(curReachablePoint, allPathPoints[i], obstacleMapCollider, 0.1f) &&
+                        !GetLineIsCollidingWith(curReachablePoint, allPathPoints[i], windowMapCollider, 0.1f))
                     {
                         curReachablePoint = allPathPoints[i];
                         path.Add(curReachablePoint);
@@ -246,6 +260,32 @@ public class Enemy_scr : MonoBehaviour
         return path;
     }
 
+    void DoIWannaTalk()
+    {
+        if (timeToWannaTalk >= minTimeToWannaTalk)
+        {
+            if (chanceOfTalkingIntervalTime >= chanceOfTalkingInterval)
+            {
+                if (Random.value <= chanceOfTalking)
+                {
+                    isTalking = true;
+                    GetComponent<SpriteRenderer>().sprite = talkSprite;
+                    timeToWannaTalk = 0.0f;
+                }
+
+                chanceOfTalkingIntervalTime = 0.0f;
+            }
+            else
+            {
+                chanceOfTalkingIntervalTime += Time.deltaTime;
+            }
+        }
+        else
+        {
+            timeToWannaTalk += Time.deltaTime;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -272,9 +312,47 @@ public class Enemy_scr : MonoBehaviour
     {
         Vector2 position2d = new Vector2(transform.position.x, transform.position.y);
 
+        if (isTalking)
+        {
+            curState = State.IDLE;
+        }
+
         if (curState == State.IDLE)
         {
+            if (isTalking)
+            {
+                if (talkingTime >= maxTalkingTime)
+                {
+                    isTalking = false;
+                    talkingTime = 0.0f;
+                    GetComponent<SpriteRenderer>().sprite = mainSprite;
 
+                    if (strollPath.Count > 1)
+                    {
+                        curState = State.STROLLING;
+                    }
+                }
+                else if (talkingTime >= minTalkingTime && Random.Range(minTalkingTime, maxTalkingTime) < talkingTime)
+                {
+                    
+                    isTalking = false;
+                    talkingTime = 0.0f;
+                    GetComponent<SpriteRenderer>().sprite = mainSprite;
+
+                    if (strollPath.Count > 1)
+                    {
+                        curState = State.STROLLING;
+                    }
+                }
+                else
+                {
+                    talkingTime += Time.deltaTime;
+                }
+            }
+            else
+            {
+                DoIWannaTalk();
+            }
         }
         else if (curState == State.STROLLING)
         {
@@ -302,6 +380,8 @@ public class Enemy_scr : MonoBehaviour
             float angle = Vector2.SignedAngle(Vector2.up, direction.normalized);
 
             transform.rotation = Quaternion.Euler(0.0f, 0.0f, angle);
+
+            DoIWannaTalk();
         }
         else if (curState == State.CHASING)
         {
@@ -490,6 +570,10 @@ public class Enemy_scr : MonoBehaviour
                     pointIndex = 0;
 
                     isSecondPath = false;
+
+                    isTalking = false;
+
+                    GetComponent<SpriteRenderer>().sprite = mainSprite;
 
                     //curGetPathDelay = getPathDelay;
 

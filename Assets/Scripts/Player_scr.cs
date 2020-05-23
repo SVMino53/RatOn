@@ -62,6 +62,8 @@ public class Player_scr : MonoBehaviour
 
     SpriteRenderer spriteRenderer;
 
+    CircleCollider2D[] colliders;
+
 
     private void Awake()
     {
@@ -89,6 +91,10 @@ public class Player_scr : MonoBehaviour
         secretBarFill.fillAmount = 0.0f;
 
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        colliders = GetComponents<CircleCollider2D>();
+
+        colliders[1].enabled = false;
     }
 
     // Update is called once per frame
@@ -101,12 +107,18 @@ public class Player_scr : MonoBehaviour
                 isTiny = true;
 
                 spriteRenderer.sprite = tinySprite;
+
+                colliders[0].enabled = false;
+                colliders[1].enabled = true;
             }
             else
             {
                 isTiny = false;
 
                 spriteRenderer.sprite = normalSprite;
+
+                colliders[1].enabled = false;
+                colliders[0].enabled = true;
             }
             inputShrinkImpulse = true;
         }
@@ -170,30 +182,37 @@ public class Player_scr : MonoBehaviour
                 moveDirection.x = 1.0f;
             }
 
-            moveDirection.Normalize();
-
-            float angle = Mathf.Asin(moveDirection.normalized.x);
-            angle *= -Mathf.Rad2Deg;
-            if (moveDirection.y < 0.0f)
+            if (moveDirection != Vector2.zero)
             {
-                angle += 180.0f;
-                angle *= -1.0f;
-            }
-            Quaternion newRotation = Quaternion.Euler(0.0f, 0.0f, angle);
+                moveDirection.Normalize();
 
-            transform.rotation = newRotation;
-
-            if (!Input.GetKey(standStillK))
-            {
-                if (Input.GetKey(runK))
+                float angle = Mathf.Asin(moveDirection.normalized.x);
+                angle *= -Mathf.Rad2Deg;
+                if (moveDirection.y < 0.0f)
                 {
-                    transform.Translate(moveDirection * runSpeed * Time.deltaTime, Space.World);
-                    curState = State.RUNNING;
+                    angle += 180.0f;
+                    angle *= -1.0f;
+                }
+                Quaternion newRotation = Quaternion.Euler(0.0f, 0.0f, angle);
+
+                transform.rotation = newRotation;
+
+                if (!Input.GetKey(standStillK))
+                {
+                    if (Input.GetKey(runK))
+                    {
+                        transform.Translate(moveDirection * runSpeed * Time.deltaTime, Space.World);
+                        curState = State.RUNNING;
+                    }
+                    else
+                    {
+                        transform.Translate(moveDirection * walkSpeed * Time.deltaTime, Space.World);
+                        curState = State.WALKING;
+                    }
                 }
                 else
                 {
-                    transform.Translate(moveDirection * walkSpeed * Time.deltaTime, Space.World);
-                    curState = State.WALKING;
+                    curState = State.STANDING;
                 }
             }
             else
