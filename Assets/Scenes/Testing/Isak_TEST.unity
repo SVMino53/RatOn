@@ -473,6 +473,83 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!1 &397722721
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 397722722}
+  - component: {fileID: 397722724}
+  - component: {fileID: 397722723}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &397722722
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397722721}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1637108099}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -544.8, y: -378.5}
+  m_SizeDelta: {x: 800, y: 89.1}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &397722723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397722721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.8962264, g: 0.8213933, b: 0.16487186, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 9a64048def28ba34d92ad1022a9f6d3d, type: 3}
+    m_FontSize: 60
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 6
+    m_MaxSize: 60
+    m_Alignment: 3
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: $0
+--- !u!222 &397722724
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397722721}
+  m_CullTransparentMesh: 0
 --- !u!1 &508758570 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3365890479121393663, guid: 9101ff750924d7a46a1b1e735fd28ce2,
@@ -21156,6 +21233,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1784059556}
+  - {fileID: 397722722}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -23071,7 +23149,7 @@ PrefabInstance:
     - target: {fileID: 5384027174426745796, guid: b0f7cd157213b6949b6ac29a40882906,
         type: 3}
       propertyPath: maxSecretValue
-      value: 50
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 5384027174426745796, guid: b0f7cd157213b6949b6ac29a40882906,
         type: 3}
@@ -23083,6 +23161,21 @@ PrefabInstance:
       propertyPath: bossObj
       value: 
       objectReference: {fileID: 610059585}
+    - target: {fileID: 5384027174426745796, guid: b0f7cd157213b6949b6ac29a40882906,
+        type: 3}
+      propertyPath: maxDistanceFromBoss
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5384027174426745796, guid: b0f7cd157213b6949b6ac29a40882906,
+        type: 3}
+      propertyPath: moneyText
+      value: 
+      objectReference: {fileID: 397722723}
+    - target: {fileID: 5384027174426745796, guid: b0f7cd157213b6949b6ac29a40882906,
+        type: 3}
+      propertyPath: recordingScoreIncrement
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5384027174426745797, guid: b0f7cd157213b6949b6ac29a40882906,
         type: 3}
       propertyPath: m_Mass
