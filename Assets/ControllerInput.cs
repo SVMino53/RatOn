@@ -57,6 +57,54 @@ public class @ControllerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""dc50f58d-19b1-45be-b8c0-caba06d2edac"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""9369e257-1bd2-4a26-a818-8ae4daa9f486"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""77b72834-80ea-46b7-b6dc-08ce48d46376"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""59854a7a-e70a-43e6-a4aa-4c8647c4c315"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Select"",
+                    ""type"": ""Button"",
+                    ""id"": ""7d2f124b-40b4-4b35-a4c7-6623e9cc95df"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""abfe47d9-66e3-46e7-9b48-e647f6139467"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -114,6 +162,94 @@ public class @ControllerInput : IInputActionCollection, IDisposable
                     ""action"": ""Shrink"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4f5c504b-4647-4340-bae3-683bdf4341ba"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6afbfe43-f409-41bd-a893-7ab2aeea36cc"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""09bb4893-191f-49b1-bcc0-f493867e7de1"",
+                    ""path"": ""<SwitchProControllerHID>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""854915ee-2ef6-4ded-94b2-b85949f441a6"",
+                    ""path"": ""<DualShockGamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8b21c656-1788-4144-8466-96e15e5d4a08"",
+                    ""path"": ""<XInputController>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""08ec78fe-8fb0-439e-9896-95bb2e2d2ffb"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""037c3eb0-9fe1-404e-9621-367e31fb008d"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1b177a25-d58e-4db0-8483-d1554eaa1df4"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -127,6 +263,12 @@ public class @ControllerInput : IInputActionCollection, IDisposable
         m_Gameplay_StandStill = m_Gameplay.FindAction("StandStill", throwIfNotFound: true);
         m_Gameplay_Record = m_Gameplay.FindAction("Record", throwIfNotFound: true);
         m_Gameplay_Shrink = m_Gameplay.FindAction("Shrink", throwIfNotFound: true);
+        m_Gameplay_Up = m_Gameplay.FindAction("Up", throwIfNotFound: true);
+        m_Gameplay_Down = m_Gameplay.FindAction("Down", throwIfNotFound: true);
+        m_Gameplay_Left = m_Gameplay.FindAction("Left", throwIfNotFound: true);
+        m_Gameplay_Right = m_Gameplay.FindAction("Right", throwIfNotFound: true);
+        m_Gameplay_Select = m_Gameplay.FindAction("Select", throwIfNotFound: true);
+        m_Gameplay_Menu = m_Gameplay.FindAction("Menu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -181,6 +323,12 @@ public class @ControllerInput : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_StandStill;
     private readonly InputAction m_Gameplay_Record;
     private readonly InputAction m_Gameplay_Shrink;
+    private readonly InputAction m_Gameplay_Up;
+    private readonly InputAction m_Gameplay_Down;
+    private readonly InputAction m_Gameplay_Left;
+    private readonly InputAction m_Gameplay_Right;
+    private readonly InputAction m_Gameplay_Select;
+    private readonly InputAction m_Gameplay_Menu;
     public struct GameplayActions
     {
         private @ControllerInput m_Wrapper;
@@ -190,6 +338,12 @@ public class @ControllerInput : IInputActionCollection, IDisposable
         public InputAction @StandStill => m_Wrapper.m_Gameplay_StandStill;
         public InputAction @Record => m_Wrapper.m_Gameplay_Record;
         public InputAction @Shrink => m_Wrapper.m_Gameplay_Shrink;
+        public InputAction @Up => m_Wrapper.m_Gameplay_Up;
+        public InputAction @Down => m_Wrapper.m_Gameplay_Down;
+        public InputAction @Left => m_Wrapper.m_Gameplay_Left;
+        public InputAction @Right => m_Wrapper.m_Gameplay_Right;
+        public InputAction @Select => m_Wrapper.m_Gameplay_Select;
+        public InputAction @Menu => m_Wrapper.m_Gameplay_Menu;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -214,6 +368,24 @@ public class @ControllerInput : IInputActionCollection, IDisposable
                 @Shrink.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShrink;
                 @Shrink.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShrink;
                 @Shrink.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnShrink;
+                @Up.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnUp;
+                @Up.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnUp;
+                @Up.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnUp;
+                @Down.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDown;
+                @Down.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDown;
+                @Down.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnDown;
+                @Left.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLeft;
+                @Left.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLeft;
+                @Left.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnLeft;
+                @Right.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRight;
+                @Right.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRight;
+                @Right.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRight;
+                @Select.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSelect;
+                @Select.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSelect;
+                @Select.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSelect;
+                @Menu.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenu;
+                @Menu.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenu;
+                @Menu.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMenu;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -233,6 +405,24 @@ public class @ControllerInput : IInputActionCollection, IDisposable
                 @Shrink.started += instance.OnShrink;
                 @Shrink.performed += instance.OnShrink;
                 @Shrink.canceled += instance.OnShrink;
+                @Up.started += instance.OnUp;
+                @Up.performed += instance.OnUp;
+                @Up.canceled += instance.OnUp;
+                @Down.started += instance.OnDown;
+                @Down.performed += instance.OnDown;
+                @Down.canceled += instance.OnDown;
+                @Left.started += instance.OnLeft;
+                @Left.performed += instance.OnLeft;
+                @Left.canceled += instance.OnLeft;
+                @Right.started += instance.OnRight;
+                @Right.performed += instance.OnRight;
+                @Right.canceled += instance.OnRight;
+                @Select.started += instance.OnSelect;
+                @Select.performed += instance.OnSelect;
+                @Select.canceled += instance.OnSelect;
+                @Menu.started += instance.OnMenu;
+                @Menu.performed += instance.OnMenu;
+                @Menu.canceled += instance.OnMenu;
             }
         }
     }
@@ -244,5 +434,11 @@ public class @ControllerInput : IInputActionCollection, IDisposable
         void OnStandStill(InputAction.CallbackContext context);
         void OnRecord(InputAction.CallbackContext context);
         void OnShrink(InputAction.CallbackContext context);
+        void OnUp(InputAction.CallbackContext context);
+        void OnDown(InputAction.CallbackContext context);
+        void OnLeft(InputAction.CallbackContext context);
+        void OnRight(InputAction.CallbackContext context);
+        void OnSelect(InputAction.CallbackContext context);
+        void OnMenu(InputAction.CallbackContext context);
     }
 }

@@ -54,11 +54,16 @@ public class Player_scr : MonoBehaviour
 
     public SpriteRenderer recordAreaSpriteRenderer;
 
-
+    [HideInInspector]
     public float secretValue = 0.0f;
 
+    public GameObject bossObj;
+    public float maxDistanceFromBoss = 0.4f;
 
-    //Rigidbody2D rb;
+    public int moneyPerSecret = 100;
+
+    public Text moneyText;
+
 
     SpriteRenderer spriteRenderer;
 
@@ -223,7 +228,21 @@ public class Player_scr : MonoBehaviour
 
         if (record || Input.GetKey(recordK))
         {
-            isRecording = true;
+            if (Vector3.Distance(transform.position, bossObj.transform.position) <= maxDistanceFromBoss)
+            {
+                if (secretValue > 0.0f)
+                {
+                    GameStatic_scr.money += (uint)(moneyPerSecret * secretValue);
+                    moneyText.text = "$" + GameStatic_scr.money.ToString();
+
+                    secretValue = 0.0f;
+                    secretBarFill.fillAmount = 0.0f;
+                }
+            }
+            else
+            {
+                isRecording = true;
+            }
         }
         else
         {
