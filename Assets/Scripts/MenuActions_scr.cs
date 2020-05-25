@@ -8,6 +8,9 @@ public class MenuActions_scr : MonoBehaviour
     {
         DoNothing,
         QuitFromMenu,
+        StartNewGame,
+        LoadGame,
+        SaveGame,
         ContinueGameFromPause
     }
 
@@ -19,6 +22,25 @@ public class MenuActions_scr : MonoBehaviour
     static public void QuitFromMenu()
     {
         Application.Quit();
+    }
+
+    static public void StartNewGame()
+    {
+        GameStatic_scr.level = 0;
+        GameStatic_scr.score = 0;
+        GameStatic_scr.money = 0;
+
+        SaveGame();
+    }
+
+    static public void LoadGame()
+    {
+        GameStatic_scr.Load();
+    }
+
+    static public void SaveGame()
+    {
+        GameStatic_scr.Save();
     }
 
     static public void ContinueGameFromPause(List<GameObject> activateObjs, List<GameObject> deactivateObjs, List<GameObject> enableObjs, List<GameObject> disableObjs, General_scr genaralScript)
@@ -59,6 +81,15 @@ public class MenuActions_scr : MonoBehaviour
                 break;
             case Actions.ContinueGameFromPause:
                 ContinueGameFromPause(new List<GameObject>(), new List<GameObject>(), new List<GameObject>(), new List<GameObject>(), new General_scr());
+                break;
+            case Actions.StartNewGame:
+                StartNewGame();
+                break;
+            case Actions.LoadGame:
+                LoadGame();
+                break;
+            case Actions.SaveGame:
+                SaveGame();
                 break;
         }
     }
