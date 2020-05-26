@@ -56,6 +56,8 @@ public class Player_scr : MonoBehaviour
 
     [HideInInspector]
     public float secretValue = 0.0f;
+    float totalSecretValue = 0.0f;
+    public float minTotalSecretValue = 200.0f;
 
     public GameObject bossObj;
     public float maxDistanceFromBoss = 0.4f;
@@ -63,6 +65,11 @@ public class Player_scr : MonoBehaviour
     public int moneyPerSecret = 100;
 
     public Text moneyText;
+
+    public string exitTag = "LevelExit";
+
+    // For testing
+    public GameObject goodJob;
 
 
     SpriteRenderer spriteRenderer;
@@ -234,6 +241,7 @@ public class Player_scr : MonoBehaviour
                 {
                     GameStatic_scr.money += (uint)(moneyPerSecret * secretValue);
                     moneyText.text = "$" + GameStatic_scr.money.ToString();
+                    totalSecretValue += secretValue;
 
                     secretValue = 0.0f;
                     secretBarFill.fillAmount = 0.0f;
@@ -277,6 +285,19 @@ public class Player_scr : MonoBehaviour
             {
                 secretValue += Time.deltaTime * recordingScoreIncrement;
                 secretBarFill.fillAmount = secretValue / maxSecretValue;
+            }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag(exitTag))
+        {
+            if (totalSecretValue >= minTotalSecretValue)
+            {
+                GameStatic_scr.level++;
+
+                goodJob.SetActive(true);
             }
         }
     }
