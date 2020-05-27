@@ -54,6 +54,7 @@ public class Player_scr : MonoBehaviour
 
     public SpriteRenderer recordAreaSpriteRenderer;
 
+    Animator animator;
 
     public float secretValue = 0.0f;
 
@@ -95,6 +96,8 @@ public class Player_scr : MonoBehaviour
         colliders = GetComponents<CircleCollider2D>();
 
         colliders[1].enabled = false;
+
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -108,6 +111,8 @@ public class Player_scr : MonoBehaviour
 
                 spriteRenderer.sprite = tinySprite;
 
+                animator.SetBool("Tiny", true);
+
                 colliders[0].enabled = false;
                 colliders[1].enabled = true;
             }
@@ -116,6 +121,8 @@ public class Player_scr : MonoBehaviour
                 isTiny = false;
 
                 spriteRenderer.sprite = normalSprite;
+
+                animator.SetBool("Tiny", false);
 
                 colliders[1].enabled = false;
                 colliders[0].enabled = true;
@@ -149,16 +156,23 @@ public class Player_scr : MonoBehaviour
                 {
                     transform.Translate(faceDirection * runSpeed * Time.deltaTime, Space.World);
                     curState = State.RUNNING;
+                    animator.SetBool("Running", true);
+                    animator.SetBool("Walking", false);
+
                 }
                 else
                 {
                     transform.Translate(faceDirection * walkSpeed * Time.deltaTime, Space.World);
                     curState = State.WALKING;
+                    animator.SetBool("Walking", true);
+                    animator.SetBool("Running", false);
                 }
             }
             else
             {
                 curState = State.STANDING;
+                animator.SetBool("Walking", false);
+                animator.SetBool("Running", false);
             }
         }
         else
@@ -203,31 +217,48 @@ public class Player_scr : MonoBehaviour
                     {
                         transform.Translate(moveDirection * runSpeed * Time.deltaTime, Space.World);
                         curState = State.RUNNING;
+                        animator.SetBool("Running", true);
+                        animator.SetBool("Walking", false);
+
                     }
                     else
                     {
                         transform.Translate(moveDirection * walkSpeed * Time.deltaTime, Space.World);
                         curState = State.WALKING;
+                        animator.SetBool("Walking", true);
+                        animator.SetBool("Running", false);
+                        animator.SetBool("Recording", false);
                     }
                 }
                 else
                 {
                     curState = State.STANDING;
+                    animator.SetBool("Walking", false);
+                    animator.SetBool("Running", false);
+                
+
                 }
             }
             else
             {
                 curState = State.STANDING;
+                animator.SetBool("Walking", false);
+                animator.SetBool("Running", false);
+                animator.SetBool("Recording", false);
+
             }
         }
 
         if (record || Input.GetKey(recordK))
         {
             isRecording = true;
+            animator.SetBool("Recording", true);
+            animator.SetBool("Walking", false);
         }
         else
         {
             isRecording = false;
+            animator.SetBool("Recording", false);
         }
 
         if (isRecording && secretValue < maxSecretValue && !isChased && !isTiny)
