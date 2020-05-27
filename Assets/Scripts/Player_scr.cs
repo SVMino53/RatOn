@@ -54,11 +54,25 @@ public class Player_scr : MonoBehaviour
 
     public SpriteRenderer recordAreaSpriteRenderer;
 
-
+    [HideInInspector]
     public float secretValue = 0.0f;
+    float totalSecretValue = 0.0f;
+    public float minTotalSecretValue = 200.0f;
 
+    public GameObject bossObj;
+    public float maxDistanceFromBoss = 0.4f;
 
-    //Rigidbody2D rb;
+    public int moneyPerSecret = 100;
+    uint levelMoney = 0;
+    public Text moneyText;
+
+    public string exitTag = "LevelExit";
+
+    public GameState_scr gameStateScr;
+
+    // For testing
+    public GameObject goodJob;
+
 
     SpriteRenderer spriteRenderer;
 
@@ -95,6 +109,11 @@ public class Player_scr : MonoBehaviour
         colliders = GetComponents<CircleCollider2D>();
 
         colliders[1].enabled = false;
+
+        // TEMP
+        {
+            GameStatic_scr.Save();
+        }
     }
 
     // Update is called once per frame
@@ -223,7 +242,22 @@ public class Player_scr : MonoBehaviour
 
         if (record || Input.GetKey(recordK))
         {
-            isRecording = true;
+            if (Vector3.Distance(transform.position, bossObj.transform.position) <= maxDistanceFromBoss)
+            {
+                if (secretValue > 0.0f)
+                {
+                    levelMoney += (uint)(moneyPerSecret * secretValue);
+                    moneyText.text = "$" + levelMoney.ToString();
+                    totalSecretValue += secretValue;
+
+                    secretValue = 0.0f;
+                    secretBarFill.fillAmount = 0.0f;
+                }
+            }
+            else
+            {
+                isRecording = true;
+            }
         }
         else
         {
@@ -258,6 +292,26 @@ public class Player_scr : MonoBehaviour
             {
                 secretValue += Time.deltaTime * recordingScoreIncrement;
                 secretBarFill.fillAmount = secretValue / maxSecretValue;
+            }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag(enemyTag))
+        {
+            gameStateScr.curGameState = GameState_scr.GameState.GAME_OVER;
+            gameStateScr.changeState = true;
+        }
+        else if (collision.gameObject.CompareTag(exitTag))
+        {
+            if (totalSecretValue >= minTotalSecretValue)
+            {
+                GameStatic_scr.level++;
+                GameStatic_scr.money += levelMoney;
+                GameStatic_scr.score += (uint)totalSecretValue;
+
+                goodJob.SetActive(true);
             }
         }
     }

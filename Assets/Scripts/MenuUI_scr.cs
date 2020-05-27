@@ -15,7 +15,7 @@ public class MenuUI_scr : MonoBehaviour
     bool select;
 
 
-    public General_scr generalScr;
+    public GameState_scr gameStateScr;
 
     public List<GameObject> menuOptions;
     public int rows;
@@ -175,7 +175,7 @@ public class MenuUI_scr : MonoBehaviour
         {
             if (actions[index] == MenuActions_scr.Actions.ContinueGameFromPause)
             {
-                MenuActions_scr.DoAction(actions[index], activateObjs, deactivateObjs, enableObjs, disableObjs, generalScr);
+                MenuActions_scr.DoAction(actions[index], activateObjs, deactivateObjs, enableObjs, disableObjs, gameStateScr);
             }
             else
             {

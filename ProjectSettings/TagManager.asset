@@ -7,6 +7,8 @@ TagManager:
   - Enemy
   - Obstacle
   - Window
+  - Boss
+  - LevelExit
   layers:
   - Default
   - TransparentFX
