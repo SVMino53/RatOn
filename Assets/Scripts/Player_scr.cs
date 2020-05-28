@@ -53,13 +53,10 @@ public class Player_scr : MonoBehaviour
     public Sprite tinySprite;
 
     public SpriteRenderer recordAreaSpriteRenderer;
-
-<<<<<<< HEAD
+    
     Animator animator;
-
-=======
+    
     [HideInInspector]
->>>>>>> Develop
     public float secretValue = 0.0f;
     float totalSecretValue = 0.0f;
     public float minTotalSecretValue = 200.0f;
@@ -114,15 +111,13 @@ public class Player_scr : MonoBehaviour
         colliders = GetComponents<CircleCollider2D>();
 
         colliders[1].enabled = false;
-
-<<<<<<< HEAD
+        
         animator = GetComponent<Animator>();
-=======
+
         // TEMP
         {
             GameStatic_scr.Save();
         }
->>>>>>> Develop
     }
 
     // Update is called once per frame
@@ -276,11 +271,9 @@ public class Player_scr : MonoBehaviour
 
         if (record || Input.GetKey(recordK))
         {
-<<<<<<< HEAD
-            isRecording = true;
             animator.SetBool("Recording", true);
             animator.SetBool("Walking", false);
-=======
+
             if (Vector3.Distance(transform.position, bossObj.transform.position) <= maxDistanceFromBoss)
             {
                 if (secretValue > 0.0f)
@@ -297,7 +290,6 @@ public class Player_scr : MonoBehaviour
             {
                 isRecording = true;
             }
->>>>>>> Develop
         }
         else
         {
