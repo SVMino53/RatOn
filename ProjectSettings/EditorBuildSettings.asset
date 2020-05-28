@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/HowToPlay.unity
+    guid: 24a0a5a53a6998248a9d714115aa8ac5
+  - enabled: 1
     path: Assets/Scenes/Testing/Isak_TEST.unity
     guid: 3fd285a2112a38740b2fdac71eb40b12
   m_configObjects: {}

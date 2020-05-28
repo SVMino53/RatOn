@@ -75,6 +75,9 @@ public class Player_scr : MonoBehaviour
     // For testing
     public GameObject goodJob;
 
+    public Sprite idleSprite;
+    public Sprite enemyIdleSprite;
+
 
     SpriteRenderer spriteRenderer;
 
@@ -338,6 +341,12 @@ public class Player_scr : MonoBehaviour
         {
             gameStateScr.curGameState = GameState_scr.GameState.GAME_OVER;
             gameStateScr.changeState = true;
+            collision.gameObject.GetComponent<MonoBehaviour>().enabled = false;
+            animator.enabled = false;
+            collision.gameObject.GetComponent<Animator>().enabled = false;
+
+            GetComponent<SpriteRenderer>().sprite = idleSprite;
+            collision.gameObject.GetComponent<SpriteRenderer>().sprite = enemyIdleSprite;
         }
         else if (collision.gameObject.CompareTag(exitTag))
         {
