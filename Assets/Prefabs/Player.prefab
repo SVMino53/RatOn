@@ -39,7 +39,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3659996088888728972}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -112,6 +112,7 @@ GameObject:
   - component: {fileID: 5384027174426745797}
   - component: {fileID: 5384027174426745802}
   - component: {fileID: 882897469412293747}
+  - component: {fileID: 1743403303}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -173,7 +174,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 20
-  m_Sprite: {fileID: 21300000, guid: 9041f861c72c3fb4790a5fbf0101753f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: a3edb66562f4ac145ada94c3620b7270, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -212,13 +213,21 @@ MonoBehaviour:
   runSpeed: 6
   inputSensitivityOffset: 0.2
   enemyTag: Enemy
-  recordingScoreIncrement: 1
+  recordingScoreIncrement: 2
   maxSecretValue: 100
   secretBarFill: {fileID: 0}
   normalSprite: {fileID: 21300000, guid: 9041f861c72c3fb4790a5fbf0101753f, type: 3}
   tinySprite: {fileID: 21300000, guid: 67a2607fe1b22fa43906975172a74f5c, type: 3}
   recordAreaSpriteRenderer: {fileID: 5162687104976981396}
   secretValue: 0
+  minTotalSecretValue: 200
+  bossObj: {fileID: 0}
+  maxDistanceFromBoss: 0.8
+  moneyPerSecret: 100
+  moneyText: {fileID: 0}
+  exitTag: LevelExit
+  gameStateScr: {fileID: 0}
+  goodJob: {fileID: 0}
 --- !u!50 &5384027174426745797
 Rigidbody2D:
   serializedVersion: 4
@@ -231,7 +240,7 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 2
   m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 0
@@ -271,4 +280,23 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.15
+  m_Radius: 0.1
+--- !u!95 &1743403303
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5384027174426745803}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7d6242c5b466c3c419742bb325b2f1dc, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
