@@ -8,7 +8,7 @@ public class GameStatic_scr
     static public string dir = "SaveData";
     static public string path = "SaveData/save.txt";
 
-    static public byte level = 0;
+    static public byte level = 1;
     static public uint score = 0;
     static public uint money = 0;
     static public uint highScore = 0;
