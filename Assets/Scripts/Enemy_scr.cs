@@ -69,6 +69,8 @@ public class Enemy_scr : MonoBehaviour
 
     ContactFilter2D cf = new ContactFilter2D();
 
+    Animator animator;
+
     bool getPathOnce = true;
 
     // TEMPORARY
@@ -290,19 +292,26 @@ public class Enemy_scr : MonoBehaviour
     {
         lineCollider = lineSightObj.GetComponent<EdgeCollider2D>();
 
+        animator = GetComponent<Animator>();
+
         if (strollPath.Count == 0)
         {
             curState = State.IDLE;
+            animator.SetBool("Idle", true);
+
         }
         else if (strollPath.Count == 1)
         {
             curState = State.IDLE;
             transform.position = strollPath[0];
+            animator.SetBool("Idle", true);
         }
         else
         {
             curState = State.STROLLING;
             transform.position = strollPath[0];
+            animator.SetBool("Walk", true);
+            animator.SetBool("Idle", false);
         }
     }
 
@@ -329,6 +338,8 @@ public class Enemy_scr : MonoBehaviour
                     if (strollPath.Count > 1)
                     {
                         curState = State.STROLLING;
+                        animator.SetBool("Walk", true);
+                        animator.SetBool("Run", false);
                     }
                 }
                 else if (talkingTime >= minTalkingTime && Random.Range(minTalkingTime, maxTalkingTime) < talkingTime)
@@ -341,6 +352,7 @@ public class Enemy_scr : MonoBehaviour
                     if (strollPath.Count > 1)
                     {
                         curState = State.STROLLING;
+                        
                     }
                 }
                 else
@@ -563,6 +575,7 @@ public class Enemy_scr : MonoBehaviour
                 if (!isBlocked && n > 1)
                 {
                     curState = State.CHASING;
+                    animator.SetBool("Run", true);
 
                     path = GetPath(playerObj.transform.position);
 

@@ -284,6 +284,9 @@ public class Player_scr : MonoBehaviour
 
                     secretValue = 0.0f;
                     secretBarFill.fillAmount = 0.0f;
+
+                    animator.SetBool("Selling", true);
+                    animator.SetBool("Selling", false);
                 }
             }
             else
