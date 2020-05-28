@@ -36,7 +36,6 @@ public class Enemy_scr : MonoBehaviour
     public GameObject lineSightObj;
 
     public float getPathDelay = 0.5f;
-    //float curGetPathDelay = 0.0f;
 
     public float nextPointDistence = 0.2f;
     int pointIndex = 0;
