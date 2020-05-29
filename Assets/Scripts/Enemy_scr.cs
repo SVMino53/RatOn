@@ -43,6 +43,7 @@ public class Enemy_scr : MonoBehaviour
 
     public Collider2D obstacleMapCollider;
     public Collider2D windowMapCollider;
+    public Collider2D doorCollider;
 
     public EdgeCollider2D generalLineCollider;
     public CircleCollider2D generalPointCollider;
@@ -158,25 +159,25 @@ public class Enemy_scr : MonoBehaviour
             reachedPoints.Add(curPoint);
 
             nextPoint.y += 1.0f;
-            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
+            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !doorCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
             {
                 potentialPoints.Add(nextPoint);
             }
             nextPoint.y -= 1.0f;
             nextPoint.x += 1.0f;
-            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
+            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !doorCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
             {
                 potentialPoints.Add(nextPoint);
             }
             nextPoint.y -= 1.0f;
             nextPoint.x -= 1.0f;
-            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
+            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !doorCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
             {
                 potentialPoints.Add(nextPoint);
             }
             nextPoint.y += 1.0f;
             nextPoint.x -= 1.0f;
-            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
+            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !doorCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
             {
                 potentialPoints.Add(nextPoint);
             }
@@ -224,7 +225,8 @@ public class Enemy_scr : MonoBehaviour
                 for (int i = allPathPoints.Count - 1; i >= 0; i--)
                 {
                     if (!GetLineIsCollidingWith(curReachablePoint, allPathPoints[i], obstacleMapCollider, 0.1f) &&
-                        !GetLineIsCollidingWith(curReachablePoint, allPathPoints[i], windowMapCollider, 0.1f))
+                        !GetLineIsCollidingWith(curReachablePoint, allPathPoints[i], windowMapCollider, 0.1f) &&
+                        !GetLineIsCollidingWith(curReachablePoint, allPathPoints[i], doorCollider, 0.1f))
                     {
                         curReachablePoint = allPathPoints[i];
                         path.Add(curReachablePoint);

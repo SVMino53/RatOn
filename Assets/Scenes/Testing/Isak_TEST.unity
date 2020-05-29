@@ -1091,6 +1091,10 @@ MonoBehaviour:
   gameoverObjectsActivate:
   - {fileID: 1235765275}
   gameoverObjectsEnable: []
+  testBeh:
+  - {fileID: 1689621546}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!4 &586248329
 Transform:
   m_ObjectHideFlags: 0
@@ -1357,6 +1361,11 @@ PrefabInstance:
       propertyPath: minTimeToWannaTalk
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3365890479121393651, guid: 9101ff750924d7a46a1b1e735fd28ce2,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 1302198920}
     - target: {fileID: 3365890479121393661, guid: 9101ff750924d7a46a1b1e735fd28ce2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1693,6 +1702,11 @@ PrefabInstance:
       propertyPath: minTimeToWannaTalk
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3365890479121393651, guid: 9101ff750924d7a46a1b1e735fd28ce2,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 1302198920}
     - target: {fileID: 3365890479121393661, guid: 9101ff750924d7a46a1b1e735fd28ce2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -21842,6 +21856,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1689621546 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3365890479121393651, guid: 9101ff750924d7a46a1b1e735fd28ce2,
+    type: 3}
+  m_PrefabInstance: {fileID: 3365890480141579707}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1689621542}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0c5d6854aa0e2041bf86cc68e2d600b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1741485356
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23909,6 +23935,11 @@ PrefabInstance:
       propertyPath: strollPath.Array.data[6].y
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 3365890479121393651, guid: 9101ff750924d7a46a1b1e735fd28ce2,
+        type: 3}
+      propertyPath: doorCollider
+      value: 
+      objectReference: {fileID: 1302198920}
     - target: {fileID: 3365890479121393661, guid: 9101ff750924d7a46a1b1e735fd28ce2,
         type: 3}
       propertyPath: m_LocalPosition.x
