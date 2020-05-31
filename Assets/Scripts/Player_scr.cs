@@ -16,6 +16,7 @@ public class Player_scr : MonoBehaviour
     public KeyCode standStillK = KeyCode.LeftControl;
     public KeyCode shrinkK = KeyCode.Z;
     public KeyCode recordK = KeyCode.X;
+    public AudioClip Recording;
 
     Vector2 faceDirection;
     bool run;
@@ -306,6 +307,9 @@ public class Player_scr : MonoBehaviour
         if (isRecording && secretValue < maxSecretValue && !isChased && !isTiny)
         {
             recordAreaSpriteRenderer.enabled = true;
+            {
+                SoundManager.instance.PlaySingle(Recording);
+            }
         }
         else
         {

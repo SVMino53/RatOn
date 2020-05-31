@@ -64,6 +64,7 @@ public class Enemy_scr : MonoBehaviour
     public Sprite mainSprite;
     public Sprite talkSprite;
 
+
     EdgeCollider2D lineCollider;
 
     List<Vector2> path;
