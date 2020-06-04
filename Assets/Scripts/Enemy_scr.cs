@@ -36,7 +36,6 @@ public class Enemy_scr : MonoBehaviour
     public GameObject lineSightObj;
 
     public float getPathDelay = 0.5f;
-    //float curGetPathDelay = 0.0f;
 
     public float nextPointDistence = 0.2f;
     int pointIndex = 0;
@@ -44,6 +43,7 @@ public class Enemy_scr : MonoBehaviour
 
     public Collider2D obstacleMapCollider;
     public Collider2D windowMapCollider;
+    public Collider2D doorCollider;
 
     public EdgeCollider2D generalLineCollider;
     public CircleCollider2D generalPointCollider;
@@ -64,11 +64,14 @@ public class Enemy_scr : MonoBehaviour
     public Sprite mainSprite;
     public Sprite talkSprite;
 
+
     EdgeCollider2D lineCollider;
 
     List<Vector2> path;
 
     ContactFilter2D cf = new ContactFilter2D();
+
+    Animator animator;
 
     bool getPathOnce = true;
 
@@ -157,25 +160,25 @@ public class Enemy_scr : MonoBehaviour
             reachedPoints.Add(curPoint);
 
             nextPoint.y += 1.0f;
-            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
+            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !doorCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
             {
                 potentialPoints.Add(nextPoint);
             }
             nextPoint.y -= 1.0f;
             nextPoint.x += 1.0f;
-            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
+            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !doorCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
             {
                 potentialPoints.Add(nextPoint);
             }
             nextPoint.y -= 1.0f;
             nextPoint.x -= 1.0f;
-            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
+            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !doorCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
             {
                 potentialPoints.Add(nextPoint);
             }
             nextPoint.y += 1.0f;
             nextPoint.x -= 1.0f;
-            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
+            if (!obstacleMapCollider.OverlapPoint(nextPoint) && !windowMapCollider.OverlapPoint(nextPoint) && !doorCollider.OverlapPoint(nextPoint) && !reachedPoints.Contains(nextPoint))
             {
                 potentialPoints.Add(nextPoint);
             }
@@ -223,7 +226,8 @@ public class Enemy_scr : MonoBehaviour
                 for (int i = allPathPoints.Count - 1; i >= 0; i--)
                 {
                     if (!GetLineIsCollidingWith(curReachablePoint, allPathPoints[i], obstacleMapCollider, 0.1f) &&
-                        !GetLineIsCollidingWith(curReachablePoint, allPathPoints[i], windowMapCollider, 0.1f))
+                        !GetLineIsCollidingWith(curReachablePoint, allPathPoints[i], windowMapCollider, 0.1f) &&
+                        !GetLineIsCollidingWith(curReachablePoint, allPathPoints[i], doorCollider, 0.1f))
                     {
                         curReachablePoint = allPathPoints[i];
                         path.Add(curReachablePoint);
@@ -291,19 +295,26 @@ public class Enemy_scr : MonoBehaviour
     {
         lineCollider = lineSightObj.GetComponent<EdgeCollider2D>();
 
+        animator = GetComponent<Animator>();
+
         if (strollPath.Count == 0)
         {
             curState = State.IDLE;
+            animator.SetBool("Idle", true);
+
         }
         else if (strollPath.Count == 1)
         {
             curState = State.IDLE;
             transform.position = strollPath[0];
+            animator.SetBool("Idle", true);
         }
         else
         {
             curState = State.STROLLING;
             transform.position = strollPath[0];
+            animator.SetBool("Walk", true);
+            animator.SetBool("Idle", false);
         }
     }
 
@@ -330,6 +341,8 @@ public class Enemy_scr : MonoBehaviour
                     if (strollPath.Count > 1)
                     {
                         curState = State.STROLLING;
+                        animator.SetBool("Walk", true);
+                        animator.SetBool("Run", false);
                     }
                 }
                 else if (talkingTime >= minTalkingTime && Random.Range(minTalkingTime, maxTalkingTime) < talkingTime)
@@ -342,6 +355,7 @@ public class Enemy_scr : MonoBehaviour
                     if (strollPath.Count > 1)
                     {
                         curState = State.STROLLING;
+                        
                     }
                 }
                 else
@@ -564,6 +578,7 @@ public class Enemy_scr : MonoBehaviour
                 if (!isBlocked && n > 1)
                 {
                     curState = State.CHASING;
+                    animator.SetBool("Run", true);
 
                     path = GetPath(playerObj.transform.position);
 

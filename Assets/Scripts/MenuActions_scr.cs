@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuActions_scr : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class MenuActions_scr : MonoBehaviour
         DoNothing,
         QuitFromMenu,
         StartNewGame,
+        LoadLevel,
         LoadGame,
         SaveGame,
         ContinueGameFromPause
@@ -33,6 +35,11 @@ public class MenuActions_scr : MonoBehaviour
         SaveGame();
     }
 
+    static public void LoadLevel()
+    {
+        SceneManager.LoadScene(GameStatic_scr.level, LoadSceneMode.Single);
+    }
+
     static public void LoadGame()
     {
         GameStatic_scr.Load();
@@ -43,7 +50,7 @@ public class MenuActions_scr : MonoBehaviour
         GameStatic_scr.Save();
     }
 
-    static public void ContinueGameFromPause(List<GameObject> activateObjs, List<GameObject> deactivateObjs, List<GameObject> enableObjs, List<GameObject> disableObjs, General_scr genaralScript)
+    static public void ContinueGameFromPause(List<GameObject> activateObjs, List<GameObject> deactivateObjs, List<GameObject> enableObjs, List<GameObject> disableObjs, GameState_scr gameStateScr)
     {
         for (int i = 0; i < activateObjs.Count; i++)
         {
@@ -65,7 +72,8 @@ public class MenuActions_scr : MonoBehaviour
             disableObjs[i].GetComponent<MonoBehaviour>().enabled = false;
         }
 
-        genaralScript.curGameState = General_scr.GameState.GAME;
+        gameStateScr.curGameState = GameState_scr.GameState.GAME;
+        gameStateScr.changeState = true;
     }
 
 
@@ -80,7 +88,7 @@ public class MenuActions_scr : MonoBehaviour
                 QuitFromMenu();
                 break;
             case Actions.ContinueGameFromPause:
-                ContinueGameFromPause(new List<GameObject>(), new List<GameObject>(), new List<GameObject>(), new List<GameObject>(), new General_scr());
+                ContinueGameFromPause(new List<GameObject>(), new List<GameObject>(), new List<GameObject>(), new List<GameObject>(), new GameState_scr());
                 break;
             case Actions.StartNewGame:
                 StartNewGame();
@@ -91,15 +99,18 @@ public class MenuActions_scr : MonoBehaviour
             case Actions.SaveGame:
                 SaveGame();
                 break;
+            case Actions.LoadLevel:
+                LoadLevel();
+                break;
         }
     }
 
-    static public void DoAction(Actions action, List<GameObject> activateObjs, List<GameObject> deactivateObjs, List<GameObject> enableObjs, List<GameObject> disableObjs, General_scr genaralScript)
+    static public void DoAction(Actions action, List<GameObject> activateObjs, List<GameObject> deactivateObjs, List<GameObject> enableObjs, List<GameObject> disableObjs, GameState_scr gameStateScr)
     {
         switch (action)
         {
             case Actions.ContinueGameFromPause:
-                ContinueGameFromPause(activateObjs, deactivateObjs, enableObjs, disableObjs, genaralScript);
+                ContinueGameFromPause(activateObjs, deactivateObjs, enableObjs, disableObjs, gameStateScr);
                 break;
         }
     }

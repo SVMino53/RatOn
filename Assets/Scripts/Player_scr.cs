@@ -16,6 +16,7 @@ public class Player_scr : MonoBehaviour
     public KeyCode standStillK = KeyCode.LeftControl;
     public KeyCode shrinkK = KeyCode.Z;
     public KeyCode recordK = KeyCode.X;
+    public AudioClip Recording;
 
     Vector2 faceDirection;
     bool run;
@@ -53,16 +54,30 @@ public class Player_scr : MonoBehaviour
     public Sprite tinySprite;
 
     public SpriteRenderer recordAreaSpriteRenderer;
-
+    
+    Animator animator;
+    
     [HideInInspector]
     public float secretValue = 0.0f;
+    float totalSecretValue = 0.0f;
+    public float minTotalSecretValue = 200.0f;
 
     public GameObject bossObj;
     public float maxDistanceFromBoss = 0.4f;
 
     public int moneyPerSecret = 100;
-
+    uint levelMoney = 0;
     public Text moneyText;
+
+    public string exitTag = "LevelExit";
+
+    public GameState_scr gameStateScr;
+
+    // For testing
+    public GameObject goodJob;
+
+    public Sprite idleSprite;
+    public Sprite enemyIdleSprite;
 
 
     SpriteRenderer spriteRenderer;
@@ -100,6 +115,13 @@ public class Player_scr : MonoBehaviour
         colliders = GetComponents<CircleCollider2D>();
 
         colliders[1].enabled = false;
+        
+        animator = GetComponent<Animator>();
+
+        // TEMP
+        {
+            GameStatic_scr.Save();
+        }
     }
 
     // Update is called once per frame
@@ -113,6 +135,8 @@ public class Player_scr : MonoBehaviour
 
                 spriteRenderer.sprite = tinySprite;
 
+                animator.SetBool("Tiny", true);
+
                 colliders[0].enabled = false;
                 colliders[1].enabled = true;
             }
@@ -121,6 +145,8 @@ public class Player_scr : MonoBehaviour
                 isTiny = false;
 
                 spriteRenderer.sprite = normalSprite;
+
+                animator.SetBool("Tiny", false);
 
                 colliders[1].enabled = false;
                 colliders[0].enabled = true;
@@ -154,16 +180,23 @@ public class Player_scr : MonoBehaviour
                 {
                     transform.Translate(faceDirection * runSpeed * Time.deltaTime, Space.World);
                     curState = State.RUNNING;
+                    animator.SetBool("Running", true);
+                    animator.SetBool("Walking", false);
+
                 }
                 else
                 {
                     transform.Translate(faceDirection * walkSpeed * Time.deltaTime, Space.World);
                     curState = State.WALKING;
+                    animator.SetBool("Walking", true);
+                    animator.SetBool("Running", false);
                 }
             }
             else
             {
                 curState = State.STANDING;
+                animator.SetBool("Walking", false);
+                animator.SetBool("Running", false);
             }
         }
         else
@@ -208,35 +241,56 @@ public class Player_scr : MonoBehaviour
                     {
                         transform.Translate(moveDirection * runSpeed * Time.deltaTime, Space.World);
                         curState = State.RUNNING;
+                        animator.SetBool("Running", true);
+                        animator.SetBool("Walking", false);
+
                     }
                     else
                     {
                         transform.Translate(moveDirection * walkSpeed * Time.deltaTime, Space.World);
                         curState = State.WALKING;
+                        animator.SetBool("Walking", true);
+                        animator.SetBool("Running", false);
+                        animator.SetBool("Recording", false);
                     }
                 }
                 else
                 {
                     curState = State.STANDING;
+                    animator.SetBool("Walking", false);
+                    animator.SetBool("Running", false);
+                
+
                 }
             }
             else
             {
                 curState = State.STANDING;
+                animator.SetBool("Walking", false);
+                animator.SetBool("Running", false);
+                animator.SetBool("Recording", false);
+
             }
         }
 
         if (record || Input.GetKey(recordK))
         {
+            animator.SetBool("Recording", true);
+            animator.SetBool("Walking", false);
+
             if (Vector3.Distance(transform.position, bossObj.transform.position) <= maxDistanceFromBoss)
             {
                 if (secretValue > 0.0f)
                 {
-                    GameStatic_scr.money += (uint)(moneyPerSecret * secretValue);
-                    moneyText.text = "$" + GameStatic_scr.money.ToString();
+                    levelMoney += (uint)(moneyPerSecret * secretValue);
+                    moneyText.text = "$" + levelMoney.ToString();
+                    totalSecretValue += secretValue;
 
                     secretValue = 0.0f;
                     secretBarFill.fillAmount = 0.0f;
+
+                    animator.SetBool("Selling", true);
+                    animator.SetBool("Selling", false);
                 }
             }
             else
@@ -247,11 +301,15 @@ public class Player_scr : MonoBehaviour
         else
         {
             isRecording = false;
+            animator.SetBool("Recording", false);
         }
 
         if (isRecording && secretValue < maxSecretValue && !isChased && !isTiny)
         {
             recordAreaSpriteRenderer.enabled = true;
+            {
+                SoundManager.instance.PlaySingle(Recording);
+            }
         }
         else
         {
@@ -277,6 +335,32 @@ public class Player_scr : MonoBehaviour
             {
                 secretValue += Time.deltaTime * recordingScoreIncrement;
                 secretBarFill.fillAmount = secretValue / maxSecretValue;
+            }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag(enemyTag))
+        {
+            gameStateScr.curGameState = GameState_scr.GameState.GAME_OVER;
+            gameStateScr.changeState = true;
+            collision.gameObject.GetComponent<MonoBehaviour>().enabled = false;
+            animator.enabled = false;
+            collision.gameObject.GetComponent<Animator>().enabled = false;
+
+            GetComponent<SpriteRenderer>().sprite = idleSprite;
+            collision.gameObject.GetComponent<SpriteRenderer>().sprite = enemyIdleSprite;
+        }
+        else if (collision.gameObject.CompareTag(exitTag))
+        {
+            if (totalSecretValue >= minTotalSecretValue)
+            {
+                GameStatic_scr.level++;
+                GameStatic_scr.money += levelMoney;
+                GameStatic_scr.score += (uint)totalSecretValue;
+
+                goodJob.SetActive(true);
             }
         }
     }
